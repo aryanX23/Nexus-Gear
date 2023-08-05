@@ -15,9 +15,11 @@ const productSchema = mongoose.Schema({
     imageurl: {
         type: String,
         required: true
+    },
+    tag: {
+        type: String,
+        required: true
     }
 });
 const Products = mongoose.model('Products', productSchema); 
-module.exports = {
-    Products
-}
+module.exports = Products;
