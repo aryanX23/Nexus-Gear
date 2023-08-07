@@ -1,0 +1,11 @@
+.hero-section-main{
+    background: linear-gradient(45deg, #0f172ad6, #1937a5, #6356b4, #8b44e8)
+}
+
+.herosection-text{
+    margin: 0 auto;
+    max-width: var(--max-content);
+    padding: calc(var(--spacing) *2 ) ;
+    text-align: center;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
