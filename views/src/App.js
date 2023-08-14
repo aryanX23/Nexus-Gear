@@ -1,8 +1,8 @@
 import './App.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Navbar from './components/Navbar/navbar'
 import LoginPage from './components/Login/LoginPage'
 import HomePage from './pages/HomePage'
+import Cart from './components/Cart/Cart'
 
 function App() {
   return (
@@ -11,6 +11,7 @@ function App() {
         <Routes>
           {/* Specify components for each route */}
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/Cart" element={<Cart/>}/>
           <Route path="/" element={<HomePage />} />
         </Routes>
       </div>

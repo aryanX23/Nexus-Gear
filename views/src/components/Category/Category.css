@@ -19,6 +19,17 @@
 }
 
 .grid {
-  display: flex;
-  justify-content: space-between;
+  gap: 5rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  align-items: center;
+  justify-content: center;
+}
+
+.max-w-md {
+  width: 600px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 }
