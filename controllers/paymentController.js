@@ -24,27 +24,50 @@ async function getCart(req, res, next) {
         return res.send([]);
     }
 }
+async function setCart(req, res) {
+    try {
+        const { userId, cartItems } = req.body;
+        if (userId === "temp")
+            return res.sendStatus(400);
+        const user = await Users.findOne({ _id: userId });
+        if (!user) {
+            return res.send({
+                cartItems: [],
+                previousOrders: [],
+            });
+        }
+        await Users.findOneAndUpdate(
+            { _id: userId },
+            { cartitems: cartItems }
+        );
+        return res.send({ response: "Working", data: user.cartitems });
+    } catch (e) {
+        console.log(e);
+        res.sendStatus(400);
+    }
+}
 async function handlePayment(req, res) {
     try {
         const { cartItems } = req.body;
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],
-            line_items: cartItems.map((p) => {
-                return {
-                    name: p.name,
-                    description: p.description,
-                    amount: p.price * 100,
-                    currency: "inr",
-                    quantity: p.quantity,
-                };
-            }),
             mode: "payment",
-            success_url:
-                req.protocol + "://" + req.get("host") + "/checkout/success",
-            cancel_url:
-                req.protocol + "://" + req.get("host") + "/checkout/cancel",
+            line_items: cartItems.map((item) => ({
+                quantity: item.quantity,
+                price_data: {
+                    currency: "inr",
+                    unit_amount: item.price * 100,
+                    product_data: {
+                        description: item.description,
+                        name: item.name,
+                        images: [item.imageurl],
+                    },
+                },
+            })),
+            success_url: process.env.ORIGIN_URL + "/checkout/success",
+            cancel_url: process.env.ORIGIN_URL + "/checkout/cancel",
         });
-        return res.send({ id: session.id, response: "Payment in Progress" });
+        return res.send({ id: session.id, url:session.url, response: "Payment in Progress" });
     }
     catch (e) {
         console.log(e);
@@ -54,5 +77,6 @@ async function handlePayment(req, res) {
 
 module.exports = {
     getCart,
-    handlePayment
+    handlePayment,
+    setCart
 }

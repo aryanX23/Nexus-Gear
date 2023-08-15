@@ -28,12 +28,12 @@ async function handleLogin(req, res){
         const { email, password } = req.body;
         const exists = await Users.findOne({ email });
         if (!exists) {
-            res.send({ response: "Incorrect Email", authenticated: false });
+            res.sendStatus(400);
             return;
         }
         const isValid = await bcrypt.compare(password, exists.password);
         if (!isValid) {
-            res.send({ response: "Incorrect Password", authenticated: false });
+            res.sendStatus(400); 
             return;
         }
         const payload = {
@@ -51,13 +51,13 @@ async function handleLogin(req, res){
             }
         );
         await exists.save();
-        res.cookie('JWT_TOKEN', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: false, sameSite: "None" });
-        res.send({ ACCESS_TOKEN: accessToken, authenticated: true });
+        res.cookie('JWT_TOKEN', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: "None" })
+        .send({ ACCESS_TOKEN: accessToken, userId: exists._id });
         return;
     }
     catch (e) {
         console.log(e);
-        res.send({response:"Error",authenticated: false});
+        res.sendStatus(400);
     }
 }
 

@@ -1,21 +1,25 @@
 import './App.css';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import LoginPage from './components/Login/LoginPage'
 import HomePage from './pages/HomePage'
 import Cart from './components/Cart/Cart'
+import ProductPage from './pages/ProductPage';
+import Success from './pages/Success';
+import Cancel from './pages/Cancel';
 
 function App() {
   return (
-    <Router>
       <div>
-        <Routes>
-          {/* Specify components for each route */}
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/Cart" element={<Cart/>}/>
-          <Route path="/" element={<HomePage />} />
-        </Routes>
+          <Routes>
+              {/* Specify components for each route */}
+              <Route path="/productPage" element={<ProductPage />} />
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/checkout/success" element={<Success />} />
+              <Route path="/checkout/cancel" element={<Cancel />} />
+              <Route path="/Cart" element={<Cart />} />
+              <Route path="/" element={<HomePage />} />
+          </Routes>
       </div>
-    </Router>
   );
 }
 
