@@ -3,7 +3,6 @@ import ImageCarousel from '../../components/ImageCarousel/ImageCarousel';
 import img1 from '../../Assets/1.jpg';
 import img2 from '../../Assets/2.jpg';
 import img3 from '../../Assets/3.jpg';
-import './HeroSection.css';
 import logo from '../../Assets/HeroImg.png';
 
 const images = [
@@ -34,7 +33,7 @@ const HeroSection = () => {
               <p className="max-w-2xl mb-6 font-light text-gray-500 lg:mb-8 md:text-lg lg:text-xl dark:text-gray-400">
                 Welcome to the OneStop destination for all your gaming needs. Discover a world of premium gaming accessories designed to elevate your gaming experience to the next level. At NexusGear, we are passionate about gaming, and we know that having the right gear can make all the difference.
               </p>
-              <button className="bg-transparent hover:bg-white text-violet-600 font-semibold hover:text-blue-600 py-2 px-4 border border-violet-700 hover:border-transparent rounded" onClick={scrollToCategories} >SHOP NOW</button>
+              <button className="bg-transparent hover:bg-white text-violet-700 font-semibold hover:text-violet-600 py-2 px-4 border border-violet-700 hover:border-transparent rounded" onClick={scrollToCategories} >SHOP NOW</button>
             </div>
           </div>
         </div>

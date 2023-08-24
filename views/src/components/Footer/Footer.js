@@ -2,10 +2,12 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faDiscord, faTwitter, faGithub, faDribbble } from '@fortawesome/free-brands-svg-icons';
 import Logo from '../../Assets/NexusGear-Black.png'
+import Newsletter from '../NewsLetter/Newsletter';
 
 const Footer = () => {
   return (
     <footer className="bg-white dark:bg-zinc-950  inset-x-0 bottom-0" id='footer'>
+      <Newsletter/>
       <div className="mx-auto w-full max-w-screen-xl p-2 py-2 lg:py-4">
         <div className="md:flex md:justify-between">
           <div className="mb-6 md:mb-0">

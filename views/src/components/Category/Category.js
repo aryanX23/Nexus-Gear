@@ -7,7 +7,7 @@ const Category = () => {
   return (
     <div className="min-h-screen app__bg section__padding" id='categories'>
       <div>
-        <h1 className="text-4xl font-bold section-title text-white mb-5">
+        <h1 className="text-4xl font-bold section-title text-white">
           Build your next Gaming Setup
         </h1>
         <Tabs/>

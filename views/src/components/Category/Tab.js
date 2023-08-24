@@ -107,14 +107,14 @@ const Tabs = () => {
     }, [activeTab]);
     return (
         <div>
-            <div className="flex justify-center border-b border-gray-200 mt-5" id="categories">
+            <div className="flex justify-center mt-5" id="categories">
                 {categories.map((category, index) => (
                     <button
                         key={index}
-                        className={`px-5 mx-3 py-1 ${
+                        className={`px-5 mx-3 py-1 text-lg ${
                             activeTab === index
-                                ? "border-b-2 border-blue-500 text-blue-500"
-                                : "text-gray-500"
+                                ? "border-b-2 border-violet-700 text-violet-700"
+                                : "text-slate-400"
                         }`}
                         onClick={() => handleTabClick(index)}
                     >
