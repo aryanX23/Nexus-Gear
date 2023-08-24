@@ -99,7 +99,7 @@ const Navbar = () => {
                             </button>
                         )}
                         <button onClick={toggleCart}>
-                            <FontAwesomeIcon icon={faCartShopping} />
+                            <FontAwesomeIcon icon={faCartShopping} color="white"/>
                         </button>
                     </div>
                 </div>

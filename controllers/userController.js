@@ -8,7 +8,7 @@ async function addUser(req, res, next) {
         const { name, email, password } = req.body;
         const exists = await Users.findOne({ email });
         if (exists) {
-            return res.send({ response: "User Already Exists" });
+            return res.status(403).send({ response: "User Already Exists" });
         }
         const newUser = new Users({ name, email });
         bcrypt.hash(password, 10, async (err, hashedPass) => {
@@ -16,11 +16,11 @@ async function addUser(req, res, next) {
             await newUser.save();
             next();
         });
-        return res.send({response:"User Registered Successfully!"});
+        return res.status(200).send({response:"User Registered Successfully!"});
     }
     catch (e) {
         console.log(e);
-        return res.send({response: "Error in user controller!"});
+        return res.status(400).send({response: "Error in user controller!"});
     }
 }
 async function handleLogin(req, res){

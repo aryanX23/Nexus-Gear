@@ -27,7 +27,7 @@ const LoginPage = () => {
                     headers: { "Content-Type": "application/json" },
                     withCredentials: true,
                 }
-            );
+            ); 
             const ACCESS_TOKEN = response?.data?.ACCESS_TOKEN;
             const userId = response?.data?.userId;
             setAuth({ userId, ACCESS_TOKEN, authenticated: true });

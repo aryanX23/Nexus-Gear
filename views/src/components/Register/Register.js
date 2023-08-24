@@ -1,14 +1,17 @@
 import React from 'react'
 import logo from '../../Assets/NexusGear-Black.png'
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import Axios from '../../api/axios';
 const Register = () => {
-
+    const navigate = useNavigate();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-
+    const [confirmPassword,setConfirmPassword] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(false);
+    const [message,setMessage] = useState("Please enter all the fields");
 
     const handleName = (e) => {
         setName(e.target.value);
@@ -26,18 +29,71 @@ const Register = () => {
     };
 
     const handleConfirmPassword = (e) => {
-        if (password == e.target.value) {
-            setSubmitted(false);
-        }
+        setConfirmPassword(e.target.value);
+        setSubmitted(false);
+        // else{
+        //     setConfirmPassword("");
+        //     setMessage("User Already Exists!");
+        //     setError(true);
+        //     setTimeout(()=>{
+        //         setError(false);
+        //         setMessage("Please enter all the fields");
+        //     },3000);
+        // }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (name === '' || email === '' || password === '') {
+        if (name === '' || email === '' || password === '' || confirmPassword === '') {
             setError(true);
         } else {
+            try{
+            await Axios.post(
+                '/api/users/register',
+                JSON.stringify({ name, email, password }),
+                {
+                    headers: { "Content-Type": "application/json" },
+                    withCredentials: true,
+                }
+            );
+            setMessage(name + " Registered Successfully!");
             setSubmitted(true);
             setError(false);
+            setTimeout(()=>{
+                setSubmitted(false);
+                setMessage("");
+                setName("");
+                setEmail("");
+                setPassword("");
+                navigate("/login");
+            },3000);
+            }
+            catch(e){
+                if(e.request.status === 403){
+                    setMessage("User Already Exists!");
+                    setError(true);
+                    setTimeout(()=>{
+                        setError(false);
+                        setMessage("Please enter all the fields");
+                        setName("");
+                        setEmail("");
+                        setPassword("");
+                        navigate("/login");
+                    },3000);
+                    
+                }
+                else{
+                    setMessage("Server Error! Please Try Again Later");
+                    setError(true);
+                    setTimeout(()=>{
+                        setError(false);
+                        setMessage("Please enter all the fields");
+                        setName("");
+                        setEmail("");
+                        setPassword("");
+                    },3000);
+                }
+            }
         }
     };
 
@@ -60,7 +116,7 @@ const Register = () => {
                 style={{
                     display: error ? '' : 'none',
                 }}>
-                <h1>Please enter all the fields</h1>
+                <h1>{message}</h1>
             </div>
         );
     };
@@ -80,26 +136,26 @@ const Register = () => {
                         <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
                             Create an account
                         </h1>
-                        <div className="messages">
+                        <div className="messages text-white">
                             {errorMessage()}
                             {successMessage()}
                         </div>
                         <form className="space-y-4 md:space-y-6" action="#">
                             <div>
                                 <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full Name</label>
-                                <input type="name" name="name" id="name" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" required onChange={handleName} />
+                                <input type="name" name="name" value={name} id="name" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" required onChange={handleName} />
                             </div>
                             <div>
                                 <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email Id</label>
-                                <input type="email" name="email" id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required onChange={handleEmail} />
+                                <input type="email" name="email" value={email} id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required onChange={handleEmail} />
                             </div>
                             <div>
                                 <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                <input type="password" name="password" id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required onChange={handlePassword} />
+                                <input type="password" name="password" value={password} id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required onChange={handlePassword} />
                             </div>
                             <div>
                                 <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-                                <input type="password" name="confirm-password" id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required onChange={handlePassword} />
+                                <input type="password" name="confirm-password" value={confirmPassword} id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required onChange={handleConfirmPassword} />
                             </div>
                             <div className="flex items-start">
                                 <div className="flex items-center h-5">
