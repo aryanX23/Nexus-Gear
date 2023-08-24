@@ -51,7 +51,8 @@ const Tabs = () => {
                 return (
                     <div
                         className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-md"
-                        key={item._id}
+                        key={item._id} 
+                        id="categories"
                     >
                         <div className="md:flex">
                             <div className="md:flex">
@@ -106,7 +107,7 @@ const Tabs = () => {
     }, [activeTab]);
     return (
         <div>
-            <div className="flex justify-center border-b border-gray-200">
+            <div className="flex justify-center border-b border-gray-200 mt-5" id="categories">
                 {categories.map((category, index) => (
                     <button
                         key={index}

@@ -6,6 +6,7 @@ import Cart from './components/Cart/Cart'
 import ProductPage from './pages/ProductPage';
 import Success from './pages/Success';
 import Cancel from './pages/Cancel';
+import Register from './components/Register/Register';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
               {/* Specify components for each route */}
               <Route path="/productPage" element={<ProductPage />} />
               <Route path="/login" element={<LoginPage />} />
+              <Route path="/register" element={<Register />}/>
               <Route path="/checkout/success" element={<Success />} />
               <Route path="/checkout/cancel" element={<Cancel />} />
               <Route path="/Cart" element={<Cart />} />

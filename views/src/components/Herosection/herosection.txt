@@ -1,0 +1,5 @@
+<span><h1 className='text-5xl text-white font-bold mb-4'>Welcome to NexusGear!</h1></span>
+        <h1 className='text-2xl justify-self-center text-white mb-4 ml-32'>Where Quality meets Style</h1>
+        <h2 className='herosection-text text-white'>
+          Welcome to the OneStop destination for all your gaming needs. Discover a world of premium gaming accessories designed to elevate your gaming experience to the next level. At NexusGear, we are passionate about gaming, and we know that having the right gear can make all the difference.
+        </h2>

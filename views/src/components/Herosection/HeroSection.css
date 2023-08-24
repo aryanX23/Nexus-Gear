@@ -1,5 +1,5 @@
 .hero-section-main{
-    background: linear-gradient(45deg, #0f172ad6, #1937a5, #6356b4, #8b44e8)
+    background: linear-gradient(45deg, #000000d6, #0e1f5c, #6356b4, #7a3ccc)
 }
 
 .herosection-text{
@@ -9,3 +9,5 @@
     text-align:left;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
+
+

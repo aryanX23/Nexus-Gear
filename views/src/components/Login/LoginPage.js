@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import Logo from "../../Assets/NexusGear.png";
+import Logo from "../../Assets/NexusGear-Black.png";
 import "./LoginPage.css";
 import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -39,12 +39,16 @@ const LoginPage = () => {
         }
     };
 
+    const handleClick =()=>{
+        navigate("/register");
+    }
+
     return (
         <section className="bg-slate-900">
             <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
                 <a
                     href="/"
-                    className="flex items-center mb-6 text-2xl font-semibold bg-white opacity-90 rounded-lg"
+                    className="flex items-center mb-6 text-2xl font-semibold  opacity-90 rounded-lg"
                 >
                     <img className="w-auto h-16 mr-2" src={Logo} alt="logo" />
                 </a>
@@ -130,8 +134,8 @@ const LoginPage = () => {
                             <p className="text-sm font-light text-gray-500 dark:text-gray-400">
                                 Don’t have an account yet?{" "}
                                 <a
-                                    href="/"
-                                    className="font-medium text-primary-600 hover:underline dark:text-primary-500"
+                                    onClick={handleClick}
+                                    className="font-medium text-primary-600 hover:underline dark:text-primary-500 cursor-pointer"
                                 >
                                     Sign up
                                 </a>

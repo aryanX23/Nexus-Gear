@@ -5,9 +5,9 @@ import './Category.css'
 const Category = () => {
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen app__bg section__padding" id='categories'>
       <div>
-        <h1 className="text-4xl font-bold mb-5 pt-16 section-title">
+        <h1 className="text-4xl font-bold section-title text-white mb-5">
           Build your next Gaming Setup
         </h1>
         <Tabs/>

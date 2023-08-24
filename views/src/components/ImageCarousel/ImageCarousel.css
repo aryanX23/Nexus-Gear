@@ -1,0 +1,18 @@
+.carousel-container {
+  float: right;
+  display: block;
+}
+
+.carousel-image {
+  max-width: 100%;
+  max-height: 25rem;
+  object-fit: cover;
+}
+
+/* .nav-button {
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0 10px;
+} */

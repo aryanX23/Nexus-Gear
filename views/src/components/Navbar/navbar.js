@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../Assets/NexusGear.png";
+import Logo from "../../Assets/NexusGear-Black.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faCartShopping } from "@fortawesome/free-solid-svg-icons";
 import "./navbar.css";
@@ -35,7 +35,7 @@ const Navbar = () => {
     };
 
     return (
-        <nav className="p-1 ">
+        <nav className="p-1 app__bg sticky top-0 z-50">
             <div className="container mx-auto">
                 <div className="flex justify-between items-center">
                     {/* Make the logo a link to the homepage */}
@@ -44,35 +44,35 @@ const Navbar = () => {
                     </Link>
                     <ul className="flex space-x-20 mx-auto">
                         <li>
-                            <Link
-                                to="/"
-                                className="text-gray-600 font-bold hover:text-blue-400"
+                            <a
+                                href="#hero"
+                                className="text-gray-200 font-bold hover:text-purple-400"
                             >
                                 HOME
-                            </Link>
+                            </a>
                         </li>
                         <li>
-                            <Link
-                                to="/about"
-                                className="text-gray-600 font-bold hover:text-blue-400"
+                            <a
+                                href="#footer"
+                                className="text-gray-200 font-bold hover:text-purple-400"
                             >
                                 ABOUT
-                            </Link>
+                            </a>
                         </li>
                         <li>
-                            <Link
-                                to="/categories"
-                                className="text-gray-600 font-bold hover:text-blue-400"
+                            <a
+                                href="#categories"
+                                className="text-gray-200 font-bold hover:text-purple-400"
                             >
                                 CATEGORIES
-                            </Link>
+                            </a>
                         </li>
                     </ul>
                     <div className="mx-auto">
                         <button onClick={toggleSearchBar}>
                             <FontAwesomeIcon
                                 icon={faSearch}
-                                className="text-blue-700"
+                                className="text-gray-100"
                             />
                         </button>
                         {/* Replace the existing search input with the SearchBar component */}
@@ -86,14 +86,14 @@ const Navbar = () => {
                         {auth?.authenticated ? (
                             <button
                                 onClick={handleLogOutClick}
-                                className="text-gray-600 font-bold hover:text-blue-400 mr-20"
+                                className="text-gray-200 font-bold hover:text-blue-400 mr-20"
                             >
                                 LOGOUT
                             </button>
                         ) : (
                             <button
                                 onClick={handleLoginClick}
-                                className="text-gray-600 font-bold hover:text-blue-400 mr-20"
+                                className="text-gray-200 font-bold hover:text-blue-400 mr-20"
                             >
                                 LOGIN
                             </button>
