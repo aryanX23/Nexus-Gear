@@ -1,7 +1,7 @@
 // ProductDetailPage.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Axios from "axios";
+import Axios from "../../api/axios";
 import { useCart } from "../../context/CartContext";
 
 const ProductDetailPage = (props) => {
@@ -16,7 +16,6 @@ const ProductDetailPage = (props) => {
                 Axios({
                     method: "post",
                     url:
-                        "http://localhost:8080" +
                         "/api/products/productDetails",
                     withCredentials: true,
                     data: {

@@ -14,6 +14,12 @@ const HomePage = () => {
     useEffect(() => {
         async function handleFetch() {
             if (auth.userId === "temp") {
+                axiosprivate.get(
+                "/api/payments/getCart/" + auth?.userId,
+                {
+                    withCredentials: true,
+                }
+                ).then(res=>console.log(res));
                 return;
             }
             const response = await axiosprivate.get(

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router";
 export default function Cancel() {
     const navigate = useNavigate();
     useEffect(() => {
-        const myTimeout = setTimeout(handleRedirect, 5000);
+        setTimeout(handleRedirect, 5000);
     }, []);
     function handleRedirect() {
         navigate("/");

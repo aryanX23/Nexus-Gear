@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext.js";
-import Axios from "axios";
+import Axios from "../../api/axios.js";
 const Tabs = () => {
     const { addToCart, setCurrentProduct } = useCart();
     const [activeTab, setActiveTab] = useState(0);
@@ -42,8 +42,7 @@ const Tabs = () => {
     };
     useEffect(() => {
         Axios.get(
-            "http://localhost:8080" +
-                "/api/products/" +
+            "/api/products/" +
                 categories[activeTab].id
         ).then((response) => {
             const data = response.data;
@@ -59,7 +58,7 @@ const Tabs = () => {
                                 <img
                                     className="h-auto w-full object-cover md:w-48"
                                     src={item.imageurl}
-                                    alt="Product Image"
+                                    alt="Product_Image"
                                 />
                             </div>
                             <div className="p-5">

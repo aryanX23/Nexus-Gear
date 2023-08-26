@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faDiscord, faTwitter, faGithub, faDribbble } from '@fortawesome/free-brands-svg-icons';
+import { faFacebook, faDiscord, faGithub, faDribbble } from '@fortawesome/free-brands-svg-icons';
 import "./Newsletter.css";
 const Newsletter = () => {
 	const [email, setEmail] = useState();
