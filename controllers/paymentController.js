@@ -64,8 +64,8 @@ async function handlePayment(req, res) {
                     },
                 },
             })),
-            success_url: process.env.ORIGIN_URL + "/checkout/success",
-            cancel_url: process.env.ORIGIN_URL + "/checkout/cancel",
+            success_url: "http://localhost:8080" + "/#/checkout/success",
+            cancel_url: "http://localhost:8080" + "/#/checkout/cancel",
         });
         return res.send({ id: session.id, url:session.url, response: "Payment in Progress" });
     }

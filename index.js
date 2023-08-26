@@ -10,8 +10,11 @@ const refreshRoutes = require('./routes/refreshRoute');
 const paymentRoutes = require('./routes/paymentRoutes');
 const logoutRoutes = require('./routes/logoutRoutes');
 const verifyJWT = require('./middlewares/verifyJWT');
-// Package Import and variable initializations
+const path = require("path");
 
+// Package Import and variable initializations
+const buildPath = path.normalize(path.join(__dirname, './views/build'));
+app.use(express.static(buildPath));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(
