@@ -64,8 +64,8 @@ async function handlePayment(req, res) {
                     },
                 },
             })),
-            success_url: "http://localhost:8080" + "/#/checkout/success",
-            cancel_url: "http://localhost:8080" + "/#/checkout/cancel",
+            success_url: "https://nexus-gear-production.up.railway.app" + "/#/checkout/success",
+            cancel_url: "https://nexus-gear-production.up.railway.app" + "/#/checkout/cancel",
         });
         return res.send({ id: session.id, url:session.url, response: "Payment in Progress" });
     }
