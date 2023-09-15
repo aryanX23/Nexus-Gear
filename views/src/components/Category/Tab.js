@@ -54,19 +54,15 @@ const Tabs = () => {
                         id="categories"
                     >
                         <div className="md:flex">
-                            <div className="md:flex">
-                                <img
-                                    className="h-auto w-full object-cover md:w-48"
-                                    src={item.imageurl}
-                                    alt="Product_Image"
-                                />
+                            <div className="md:flex">    
+                                <img class="p-8 rounded-t-lg" src={item.imageurl} alt="Product_Image" />
                             </div>
-                            <div className="p-5">
+                            <div className="px-5 pb-5">
                                 <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
                                     {categories[activeTab].name}
                                 </div>
                                 <span
-                                    className="block mt-1 text-lg leading-tight font-medium text-black hover:underline cursor-pointer"
+                                    className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white cursor-pointer"
                                     onClick={() => {
                                         setCurrentProduct((prev) => item._id);
                                         navigate("/productPage");
@@ -99,7 +95,7 @@ const Tabs = () => {
                     </div>
                 );
             });
-            if (payload.length == 0) payload = <h1>Nothing to Display!</h1>;
+            if (payload.length === 0) payload = <h1>Nothing to Display!</h1>;
             payload = <div className="grid">{payload}</div>;
             setActiveCategory((prev) => payload);
         });
