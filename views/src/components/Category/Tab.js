@@ -49,7 +49,7 @@ const Tabs = () => {
             var payload = data.map((item) => {
                 return (
                     <div
-                        className="max-w-md mx-auto bg-white rounded-xl shadow-md overflow-hidden md:max-w-md"
+                        className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
                         key={item._id} 
                         id="categories"
                     >
@@ -71,8 +71,8 @@ const Tabs = () => {
                                     {item.name}
                                 </span>
                                 <div className="mt-4">
-                                    <span className="text-gray-500">
-                                        Price:{item.price}rs
+                                    <span className="text-slate-400">
+                                        Price: &#8377; {item.price}
                                     </span>
                                 </div>
                                 <button
