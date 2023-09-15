@@ -49,16 +49,16 @@ const Tabs = () => {
             var payload = data.map((item) => {
                 return (
                     <div
-                        className="w-full max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+                        className="w-full max-w-sm bg-white  rounded-lg shadow-3xl dark:bg-black dark:border-gray-700 "
                         key={item._id} 
                         id="categories"
                     >
-                        <div className="md:flex">
-                            <div className="md:flex">    
-                                <img class="p-8 rounded-t-lg" src={item.imageurl} alt="Product_Image" />
+                        <div className="">
+                            <div className="">    
+                                <img class="p-2 rounded-t-lg" src={item.imageurl} alt="Product_Image" />
                             </div>
                             <div className="px-5 pb-5">
-                                <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
+                                <div className="uppercase tracking-tight text-sm text-indigo-500 font-semibold">
                                     {categories[activeTab].name}
                                 </div>
                                 <span
@@ -76,7 +76,7 @@ const Tabs = () => {
                                     </span>
                                 </div>
                                 <button
-                                    className="mt-4 bg-indigo-500 text-white rounded-md py-2 px-4 hover:bg-indigo-600 focus:outline-none focus:bg-indigo-600"
+                                    className="mt-4 bg-violet-500 text-white rounded-md py-2 px-4 hover:bg-violet-600 focus:outline-none focus:bg-violet-700"
                                     onClick={() =>
                                         addToCart({
                                             _id: item._id,
