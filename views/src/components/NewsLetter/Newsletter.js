@@ -7,7 +7,6 @@ const Newsletter = () => {
 	const handleChange = (event) => {
 		setEmail(event.target.value);
 	};
-	console.log(email);
 	return (
 		<div className="newsletter-section">
 			<div className="newsletter-content">

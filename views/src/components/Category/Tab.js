@@ -63,7 +63,7 @@ const Tabs = () => {
                         >
                             <div className="">
                                 <div className="">
-                                    <img class="p-2 rounded-t-lg" src={item.imageurl} alt="Product_Image" />
+                                    <img className="p-2 rounded-t-lg" src={item.imageurl} alt="Product_Image" />
                                 </div>
                                 <div className="px-5 pb-5">
                                     <div className="uppercase tracking-tight text-sm text-indigo-500 font-semibold">

@@ -13,22 +13,27 @@ const HomePage = () => {
     const { auth } = useContext(AuthContext);
     useEffect(() => {
         async function handleFetch() {
-            if (auth.userId === "temp") {
-                axiosprivate.get(
-                "/api/payments/getCart/" + auth?.userId,
-                {
-                    withCredentials: true,
+            try {
+                if (auth.userId === "temp") {
+                    axiosprivate.get(
+                        "/api/payments/getCart/" + auth?.userId,
+                        {
+                            withCredentials: true,
+                        }
+                    ).then(res => console.log(res));
+                    return;
                 }
-                ).then(res=>console.log(res));
-                return;
+                const response = await axiosprivate.get(
+                    "/api/payments/getCart/" + auth?.userId,
+                    {
+                        withCredentials: true,
+                    }
+                );
+                setCartItems(response.data.cartItems);
+            } catch (err) {
+                console.log(err);
+                setCartItems([]);
             }
-            const response = await axiosprivate.get(
-                "/api/payments/getCart/" + auth?.userId,
-                {
-                    withCredentials: true,
-                }
-            );
-            setCartItems(response.data.cartItems);
         }
         handleFetch();
     }, []);

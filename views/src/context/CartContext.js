@@ -1,4 +1,3 @@
-// CartContext.js
 import React, { createContext, useContext, useState } from "react";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router";
