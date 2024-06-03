@@ -1,63 +1,90 @@
-const Users = require('../models/userModel');
-const bcrypt = require('bcryptjs');
+const { ENCRYPT_KEY, ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env || {};
+const Cryptr = require('cryptr');
+const cryptr = new Cryptr(ENCRYPT_KEY);
+
 const jwt = require('jsonwebtoken');
-require("dotenv").config();
+const { isEmpty } = require('lodash');
+
+const { User } = require('../models');
+const { errorHandler } = require('../utils/errorHandler');
+const { getId } = require('../utils/generateId');
+
 
 async function addUser(req, res, next) {
     try {
-        const { name, email, password } = req.body;
-        const exists = await Users.findOne({ email });
-        if (exists) {
-            return res.status(403).send({ response: "User Already Exists" });
+        const { name = '', email = '', password = '' } = req.body || {};
+
+        if (isEmpty(name) || isEmpty(email) || isEmpty(password)) {
+            throw {
+                code: "MISSING_ARGUMENTS",
+                message: "Name, Email or Password is Missing"
+            };
         }
-        const newUser = new Users({ name, email });
-        bcrypt.hash(password, 10, async (err, hashedPass) => {
-            newUser.set('password', hashedPass);
-            await newUser.save();
-            next();
-        });
-        return res.status(200).send({response:"User Registered Successfully!"});
+
+        const exists = await User.findOne({ email }).lean() || {};
+        if (!isEmpty(exists)) {
+            throw {
+                code: "INVALID_ARGUMENTS",
+                message: "User Already Exists with this Email ID"
+            };
+        }
+
+        const userId = getId("USER");
+        const hashedPassword = cryptr.encrypt(password);
+        await User.create({ userId, email, password: hashedPassword, name, cartItems: [], previousOrders: [], role: 'user' });
+
+        return res.status(200).send({ status: "success", response: "User Registered Successfully!" });
     }
-    catch (e) {
-        console.log(e);
-        return res.status(400).send({response: "Error in user controller!"});
+    catch (error) {
+        errorHandler(req, res, error);
     }
 }
-async function handleLogin(req, res){
+
+async function handleLogin(req, res) {
     try {
-        const { email, password } = req.body;
-        const exists = await Users.findOne({ email });
-        if (!exists) {
-            res.sendStatus(400);
-            return;
+        const { email = '', password = '' } = req.body;
+
+        if (isEmpty(email) || isEmpty(password)) {
+            throw {
+                code: "MISSING_ARGUMENTS",
+                message: "Email or Password is Missing"
+            };
         }
-        const isValid = await bcrypt.compare(password, exists.password);
-        if (!isValid) {
-            res.sendStatus(400); 
-            return;
+
+        const userDetails = await User.findOne({ email }).lean() || {};
+        
+        if (isEmpty(userDetails)) {
+            throw {
+                code: "INVALID_ARGUMENTS",
+                message: "User does not exists!"
+            };
         }
+        
+        const { password: userPassword, userId } = userDetails;
+
+        const hashedPassword = cryptr.decrypt(userPassword);
+
+        if (hashedPassword !== password) {
+            throw {
+                code: "UNAUTHORIZED_USER",
+                message: "Incorrect Password"
+            };
+        }
+
         const payload = {
-            userId: exists._id,
-            email: exists.email
+            userId,
+            email,
         }
-        const ACCESS_SECRET_KEY = process.env.ACCESS_TOKEN_SECRET || "hello this is a test:)";
-        const REFRESH_SECRET_KEY = process.env.REFRESH_TOKEN_SECRET || "hello this is a test:)";
-        const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, {expiresIn: '60s'});
+        const ACCESS_SECRET_KEY = ACCESS_TOKEN_SECRET;
+        const REFRESH_SECRET_KEY = REFRESH_TOKEN_SECRET;
+
+        const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, { expiresIn: '60s' });
         const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY);
-        await Users.updateOne(
-            { _id: exists._id },
-            {
-                $set: { token: refreshToken },
-            }
-        );
-        await exists.save();
-        res.cookie('JWT_TOKEN', refreshToken, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000, secure: true, sameSite: "None" })
-        .send({ ACCESS_TOKEN: accessToken, userId: exists._id });
-        return;
+
+        return res.status(200).send({ accessToken, refreshToken, status: "success" });
     }
-    catch (e) {
-        console.log(e);
-        res.sendStatus(400);
+    catch (error) {
+        errorHandler(req, res, error);
     }
 }
 

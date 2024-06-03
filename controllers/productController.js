@@ -1,52 +1,104 @@
-const Products = require('../models/product');
+const { isEmpty } = require('lodash');
+
+const { Product, User } = require('../models');
+const { errorHandler } = require('../utils/errorHandler');
 
 async function addProducts(req, res) {
     try {
-        const { name, description, price, imageurl, tag } = req.body;
-        const product = new Products({ name, description, price, imageurl, tag });
-        await product.save();
-        res.send("Product added successfully!!");
+        const { name = '', description = '', price = '', imageurl = '', tag = '', userId = '' } = req.body;
+
+        if (isEmpty(name) || isEmpty(description) || isEmpty(price) || isEmpty(imageurl) || isEmpty(tag) || isEmpty(userId)) {
+            throw {
+                code: "MISSING_ARGUMENTS",
+                message: "UserId, Name, Description, Price, Image Url or Tag is Missing"
+            };
+        }
+
+        const userDetails = await User.findOne({ userId }).lean() || {};
+
+        if (isEmpty(userDetails)) {
+            throw {
+                code: "INVALID_ARGUMENTS",
+                message: "Admin does not exist!"
+            };
+        }
+
+        const { role } = userDetails;
+
+        if (!['admin'].includes(role)) {
+            throw {
+                code: "UNAUTHORIZED_USER",
+                message: "Not Allowed!"
+            };
+        }
+
+        await Product.create({ name, description, price, imageurl, tag });
+
+        res.send({ message: "Product added successfully!!", status: "success" });
     }
     catch (e) {
-        console.log(e);
-        res.send("Internal Error!");
+        errorHandler(req, res, e);
     }
 }
+
 async function getProducts(req, res) {
     try {
-        const tag = req.params.tag;
+        const tag = req.params.tag || "";
+
+        if (isEmpty(tag)) {
+            throw {
+                code: "MISSING_ARGUMENTS",
+                message: "Tag is Missing"
+            };
+        }
+
         if (tag == "all") {
-            const products = await Products.find();
-            res.send(products);
-            return;
+            const products = await Product.find().lean() || [];
+            return res.status(200).send({data:products, status: "success"});
         }
         else {
-            const products = await Products.find({tag});
-            res.send(products);
-            return;
+            const products = await Product.find({ tag }).lean() || [];
+            return res.status(200).send({ data: products, status: "success" });
         }
     }
     catch (e) {
-        console.log(e);
-        res.send([]);
+        errorHandler(req, res, e);
     }
 }
+
 async function getDetails(req, res) {
     try {
-        const { productId } = req.body;
-        const product = await Products.findOne({ _id: productId });
+        const { productId = '' } = req.body;
+
+        if (isEmpty(productId)) {
+            throw {
+                code: "MISSING_ARGUMENTS",
+                message: "Product Id is Missing"
+            };
+        }
+
+        const productDetails = await Product.findOne({ _id: productId }).lean() || {};
+
+        if (isEmpty(productDetails)) {
+            throw {
+                code: "INVALID_ARGUMENTS",
+                message: "Product Id does not exists",
+            };
+        }
+
+        const { name = '', description = '', price = '', imageurl = '', tag = '' } = productDetails;
+
         res.send({
-            response: "success",
-            name: product.name,
-            description: product.description,
-            price: product.price,
-            imageurl: product.imageurl,
-            tag: product.tag
+            status: "success",
+            name,
+            description,
+            price,
+            imageurl,
+            tag
         });
     }
     catch (e) {
-        console.log(e);
-        res.send({respose:"error"});
+        errorHandler(req, res, e);
     }
 }
 
