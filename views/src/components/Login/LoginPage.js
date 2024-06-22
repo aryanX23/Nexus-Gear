@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
 import Logo from "../../Assets/NexusGear-Black.png";
 import "./LoginPage.css";
-import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import useAuth from "../../hooks/useAuth.js";
 
 const LoginPage = () => {
     const axios = useAxiosPrivate();
+
     const navigate = useNavigate();
     const location = useLocation();
+
     const from = location.state?.from?.pathname || "/";
+
     const [username, setusername] = useState("");
     const [password, setpassword] = useState("");
-    const { setAuth, auth } = useAuth();
-    useEffect(() => {
-        if (auth?.authenticated) navigate(from, { replace: true });
-    }, [auth?.authenticated,from,navigate]);
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -27,11 +27,21 @@ const LoginPage = () => {
                     headers: { "Content-Type": "application/json" },
                     withCredentials: true,
                 }
-            ); 
-            const ACCESS_TOKEN = response?.data?.ACCESS_TOKEN;
-            const userId = response?.data?.userId;
-            setAuth({ userId, ACCESS_TOKEN, authenticated: true });
-            navigate(from, { replace: true });
+            );
+            
+            const { ACCESS_TOKEN = '', REFRESH_TOKEN = '', userId = '', status = '' } = response?.data || {};
+            console.log(response)
+
+            if (status === "success") {
+                localStorage.setItem("ACCESS_TOKEN", ACCESS_TOKEN);
+                localStorage.setItem("REFRESH_TOKEN", REFRESH_TOKEN);
+                localStorage.setItem("userId", userId);
+                localStorage.setItem("authenticated", true);
+                navigate(from, { replace: true });
+            } else {
+                localStorage.clear();
+            }
+ 
         } catch (err) {
             console.log(err);
             setusername((prev) => "");
@@ -39,9 +49,15 @@ const LoginPage = () => {
         }
     };
 
-    const handleClick =()=>{
+    const handleClick = () => {
         navigate("/register");
-    }
+    };
+
+    useEffect(() => {
+        const authticated = localStorage.getItem("authenticated");
+        if (authticated) navigate(from, { replace: true });
+
+    }, [from, navigate]);
 
     return (
         <section className="bg-slate-900">

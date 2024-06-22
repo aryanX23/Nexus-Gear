@@ -1,27 +1,33 @@
-import { Fragment, useState, useEffect, useContext } from "react";
+import { Fragment, useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 import { Dialog, Transition } from "@headlessui/react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
+
 import { useCart } from "../../context/CartContext.js";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
-import AuthContext from "../../context/AuthProvider.js";
 
-export default function Cart() {
-    const { auth } = useContext(AuthContext);
-    const axiosprivate = useAxiosPrivate();
-    const [open, setOpen] = useState(true);
+export default function Cart(props) {
+    const { setIsCartOpen: setOpen, isCartOpen: open } = props;
     const navigate = useNavigate();
-    const { cartItems, removeFromCart} = useCart(); 
+    const axiosprivate = useAxiosPrivate();
+    const { cartItems, removeFromCart } = useCart();
+
     const [subTotal, setSubTotal] = useState(0.0);
-    useEffect(() => {
-        var temp = 0.0;
-        for (var i = 0; i < cartItems.length; i++)
-            temp += cartItems[i]?.price * cartItems[i]?.quantity;
-        setSubTotal((prev) => temp);
-    }, [cartItems]);
+
     function handleCheckout() {
         if (cartItems.length > 0) {
             try {
+                toast.success('Checkout Initiated...', {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
                 axiosprivate
                     .post(
                         "/api/payments/create-checkout-session",
@@ -37,7 +43,7 @@ export default function Cart() {
                                 "/api/payments/setCart",
                                 JSON.stringify({
                                     cartItems: [],
-                                    userId: auth?.userId,
+                                    userId: localStorage.getItem("userId"),
                                 }),
                                 {
                                     headers: { "Content-Type": "application/json" },
@@ -56,7 +62,15 @@ export default function Cart() {
                 navigate('/');
             }
         }
-    }
+    };
+
+    useEffect(() => {
+        var temp = 0.0;
+        for (var i = 0; i < cartItems.length; i++)
+            temp += cartItems[i]?.price * cartItems[i]?.quantity;
+        setSubTotal((prev) => temp);
+    }, [cartItems]);
+
     return (
         <Transition.Root show={open} as={Fragment}>
             <Dialog as="div" className="relative z-50" onClose={setOpen}>
@@ -85,10 +99,10 @@ export default function Cart() {
                                 leaveTo="translate-x-full"
                             >
                                 <Dialog.Panel className="pointer-events-auto w-screen max-w-md">
-                                    <div className="flex h-full flex-col overflow-y-scroll bg-black shadow-xl">
+                                    <div className="flex h-full flex-col overflow-y-scroll bg-white shadow-xl">
                                         <div className="flex-1 overflow-y-auto px-4 py-6 sm:px-6">
                                             <div className="flex items-start justify-between">
-                                                <Dialog.Title className="text-lg font-medium text-gray-200">
+                                                <Dialog.Title className="text-lg font-medium text-black-200">
                                                     Shopping cart
                                                 </Dialog.Title>
                                                 <div className="ml-3 flex h-7 items-center">

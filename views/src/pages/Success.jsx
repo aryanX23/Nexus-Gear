@@ -1,13 +1,17 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router';
+
 export default function Success() {
     const navigate = useNavigate();
-    useEffect(() => {
-        setTimeout(handleRedirect, 5000);
-    },[]);
+
     function handleRedirect() {
         navigate('/');
     }
+
+    useEffect(() => {
+        setTimeout(handleRedirect, 5000);
+    }, []);
+
     return (
         <div className="bg-gray-100 h-screen flex">
             <div className="bg-white p-6  m-auto">

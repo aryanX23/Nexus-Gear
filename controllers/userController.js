@@ -78,10 +78,10 @@ async function handleLogin(req, res) {
         const ACCESS_SECRET_KEY = ACCESS_TOKEN_SECRET;
         const REFRESH_SECRET_KEY = REFRESH_TOKEN_SECRET;
 
-        const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, { expiresIn: '60s' });
+        const accessToken = jwt.sign(payload, ACCESS_SECRET_KEY, { expiresIn: '10s' });
         const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY);
 
-        return res.status(200).send({ accessToken, refreshToken, status: "success" });
+        return res.status(200).send({ ACCESS_TOKEN: accessToken, REFRESH_TOKEN: refreshToken, userId, status: "success" });
     }
     catch (error) {
         errorHandler(req, res, error);

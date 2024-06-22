@@ -1,12 +1,11 @@
-const { STRIPE_SECRET_KEY, PAYMENT_SUCCESS_URL } = process.env || {};
+const { STRIPE_SECRET_KEY, PAYMENT_SUCCESS_URL, STRIPE_WEBHOOK_SECRET } = process.env || {};
 
 const stripe = require('stripe')(STRIPE_SECRET_KEY);
-const { isEmpty } = require('lodash');
+const { isEmpty, round } = require('lodash');
 
-const { User, Order } = require('../models');
+const { User, Order, Webhook } = require('../models');
 const { errorHandler } = require('../utils/errorHandler');
 const { getId } = require('../utils/generateId');
-
 
 async function getCart(req, res, next) {
     try {
@@ -19,7 +18,7 @@ async function getCart(req, res, next) {
             };
         }
 
-        const userDetails = await User.findOne({ _id: userId }).lean() || {};
+        const userDetails = await User.findOne({ userId }).lean() || {};
 
         if (isEmpty(userDetails)) {
             throw {
@@ -52,7 +51,7 @@ async function setCart(req, res) {
             };
         }
 
-        const userDetails = await User.findOne({ _id: userId }).lean() || {};
+        const userDetails = await User.findOne({ userId }).lean() || {};
 
         if (isEmpty(userDetails)) {
             throw {
@@ -66,7 +65,7 @@ async function setCart(req, res) {
             { cartItems }
         );
 
-        return res.send({ status: "success", response: "Data Added successfully", data });
+        return res.send({ status: "success", response: "Cart Updated successfully", data: cartItems });
     } catch (e) {
         errorHandler(req, res, e);
     }
@@ -74,7 +73,8 @@ async function setCart(req, res) {
 
 async function handlePayment(req, res) {
     try {
-        const { cartItems = [], email = '', userId = '' } = req.body;
+        const { cartItems = [] } = req.body;
+        const { userId = '', email = '' } = req.userDetails || {};
 
         if (isEmpty(userId) || isEmpty(email)) {
             throw {
@@ -122,7 +122,7 @@ async function handlePayment(req, res) {
 
         return res.send({ id: session.id, url: session.url, response: "Payment in Progress", orderId });
     }
-    catch (e) {
+    catch (error) {
         errorHandler(req, res, error);
     }
 };
@@ -142,16 +142,44 @@ async function createOrderInDb(payload) {
             orderId,
             status: "initiated",
         });
-        
+
         return orderId;
 
     } catch (error) {
         throw error;
+    }
+};
+
+async function handleWebhooks(req, res) {
+    const endpointSecret = STRIPE_WEBHOOK_SECRET;
+    const sig = req.headers['stripe-signature'];
+
+    try {
+        const event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
+
+        const eventData = event.data.object;
+        const webhookId = getId("WEBHOOK");
+
+        const newWebhookPayload = {
+            webhookId,
+            webhookData: {
+                ...eventData,
+            }
+        }
+
+        await Webhook.create(newWebhookPayload);
+
+        // Return a 200 response to acknowledge receipt of the event
+        res.send();
+    } catch (err) {
+        console.error(`Webhook signature verification failed: ${err.message}`);
+        res.status(400).send(`Webhook Error: ${err.message}`);
     }
 }
 
 module.exports = {
     getCart,
     handlePayment,
-    setCart
+    setCart,
+    handleWebhooks,
 }

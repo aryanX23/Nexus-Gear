@@ -1,11 +1,10 @@
 import { axiosPrivate } from "../api/axios";
 import { useEffect } from "react";
-import useRefreshToken from "./useRefreshToken";
-import useAuth from "./useAuth";
 
 const useAxiosPrivate = () => {
-    const refresh = useRefreshToken();
-    const { auth } = useAuth();
+
+    const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
+    const REFRESH_TOKEN = localStorage.getItem("REFRESH_TOKEN");
 
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(
@@ -13,24 +12,34 @@ const useAxiosPrivate = () => {
                 if (!config.headers["authorization"]) {
                     config.headers[
                         "authorization"
-                    ] = `Bearer ${auth?.ACCESS_TOKEN}`;
+                    ] = `Bearer ${ACCESS_TOKEN}`;
                 }
+
+                if (!config.headers["refresh-token"]) {
+                    config.headers[
+                        "refresh-token"
+                    ] = `${REFRESH_TOKEN}`;
+                }
+                
                 return config;
             },
             (error) => Promise.reject(error)
         );
 
         const responseIntercept = axiosPrivate.interceptors.response.use(
-            (response) => response,
+            (response) => {
+                const authorization = response?.headers?.authorization || "";
+                const newAccessToken = authorization.split(" ")[1] || "";
+
+                if(newAccessToken !== "")
+                    localStorage.setItem("ACCESS_TOKEN", newAccessToken);
+                
+                return response;
+            },
             async (error) => {
-                const prevRequest = error?.config;
-                if (error?.response?.status === 403 && !prevRequest?.sent) {
-                    prevRequest.sent = true;
-                    const newAccessToken = await refresh();
-                    prevRequest.headers[
-                        "authorization"
-                    ] = `Bearer ${newAccessToken}`;
-                    return axiosPrivate(prevRequest);
+                console.log(error);
+                if (error?.response?.status === 401) {
+                    localStorage.clear();
                 }
                 return Promise.reject(error);
             }
@@ -40,7 +49,7 @@ const useAxiosPrivate = () => {
             axiosPrivate.interceptors.request.eject(requestIntercept);
             axiosPrivate.interceptors.response.eject(responseIntercept);
         };
-    }, [auth, refresh]);
+    }, []);
 
     return axiosPrivate;
 };

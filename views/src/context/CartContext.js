@@ -1,26 +1,31 @@
 import React, { createContext, useContext, useState } from "react";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { useNavigate, useLocation } from "react-router";
-import AuthContext from "./AuthProvider";
+
+import useAxiosPrivate from "../hooks/useAxiosPrivate";
+
 const CartContext = createContext();
+
 export function useCart() {
     return useContext(CartContext);
 }
 
 export function CartProvider({ children }) {
-    const [cartItems, setCartItems] = useState([]);
-    const [currentProduct, setCurrentProduct] = useState("");
     const axiosprivate = useAxiosPrivate();
     const navigate = useNavigate();
     const location = useLocation();
-    const { auth } = useContext(AuthContext);
+
+    const [cartItems, setCartItems] = useState([]);
+    const [currentProduct, setCurrentProduct] = useState("");
+
     const handleUpdate = async (temp) => {
         try {
+            const userId = localStorage.getItem('userId');
+
             await axiosprivate.post(
                 "/api/payments/setCart",
                 JSON.stringify({
                     cartItems: temp,
-                    userId: auth?.userId,
+                    userId: userId,
                 }),
                 {
                     headers: { "Content-Type": "application/json" },
@@ -33,6 +38,7 @@ export function CartProvider({ children }) {
             navigate("/login", { state: { from: location }, replace: true });
         }
     };
+
     const addToCart = async (product) => {
         try {
             setCartItems((prev) => {

@@ -1,8 +1,10 @@
 import React from 'react';
+
+import Newsletter from '../NewsLetter/Newsletter';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faDiscord, faTwitter, faGithub, faDribbble } from '@fortawesome/free-brands-svg-icons';
 import Logo from '../../Assets/NexusGear-Black.png'
-import Newsletter from '../NewsLetter/Newsletter';
 
 const Footer = () => {
   return (

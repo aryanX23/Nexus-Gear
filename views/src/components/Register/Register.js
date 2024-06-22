@@ -1,17 +1,20 @@
-import React from 'react'
-import logo from '../../Assets/NexusGear-Black.png'
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router';
+
 import Axios from '../../api/axios';
+
+import logo from '../../Assets/NexusGear-Black.png';
+
 const Register = () => {
     const navigate = useNavigate();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [confirmPassword,setConfirmPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [submitted, setSubmitted] = useState(false);
     const [error, setError] = useState(false);
-    const [message,setMessage] = useState("Please enter all the fields");
+    const [message, setMessage] = useState("Please enter all the fields");
 
     const handleName = (e) => {
         setName(e.target.value);
@@ -31,15 +34,6 @@ const Register = () => {
     const handleConfirmPassword = (e) => {
         setConfirmPassword(e.target.value);
         setSubmitted(false);
-        // else{
-        //     setConfirmPassword("");
-        //     setMessage("User Already Exists!");
-        //     setError(true);
-        //     setTimeout(()=>{
-        //         setError(false);
-        //         setMessage("Please enter all the fields");
-        //     },3000);
-        // }
     }
 
     const handleSubmit = async (e) => {
@@ -47,51 +41,52 @@ const Register = () => {
         if (name === '' || email === '' || password === '' || confirmPassword === '') {
             setError(true);
         } else {
-            try{
-            await Axios.post(
-                '/api/users/register',
-                JSON.stringify({ name, email, password }),
-                {
-                    headers: { "Content-Type": "application/json" },
-                    withCredentials: true,
-                }
-            );
-            setMessage(name + " Registered Successfully!");
-            setSubmitted(true);
-            setError(false);
-            setTimeout(()=>{
-                setSubmitted(false);
-                setMessage("");
-                setName("");
-                setEmail("");
-                setPassword("");
-                navigate("/login");
-            },3000);
+            try {
+                await Axios.post(
+                    '/api/users/register',
+                    JSON.stringify({ name, email, password }),
+                    {
+                        headers: { "Content-Type": "application/json" },
+                    }
+                );
+
+                setMessage(name + " Registered Successfully!");
+                setSubmitted(true);
+                setError(false);
+
+                setTimeout(() => {
+                    setSubmitted(false);
+                    setMessage("");
+                    setName("");
+                    setEmail("");
+                    setPassword("");
+                    navigate("/login");
+                }, 3000);
             }
-            catch(e){
-                if(e.request.status === 403){
+            catch (e) {
+                if (e.request.status === 403) {
                     setMessage("User Already Exists!");
                     setError(true);
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         setError(false);
                         setMessage("Please enter all the fields");
                         setName("");
                         setEmail("");
                         setPassword("");
                         navigate("/login");
-                    },3000);
-                    
+                    }, 3000);
+
                 }
-                else{
+                else {
                     setMessage("Server Error! Please Try Again Later");
                     setError(true);
-                    setTimeout(()=>{
+                    setTimeout(() => {
                         setError(false);
                         setMessage("Please enter all the fields");
                         setName("");
                         setEmail("");
                         setPassword("");
-                    },3000);
+                    }, 3000);
                 }
             }
         }

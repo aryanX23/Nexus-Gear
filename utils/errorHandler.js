@@ -6,7 +6,7 @@ const errorHandler = (req, res, err) => {
   }
 
   if (code === "RESTRICTED_ACCESS") {
-    return res.status(403).send({
+    return res.status(401).send({
       message,
       code,
       status: "fail"

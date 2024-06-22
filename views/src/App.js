@@ -1,5 +1,5 @@
-import './App.css';
 import { Route, Routes } from 'react-router-dom';
+
 import LoginPage from './components/Login/LoginPage'
 import HomePage from './pages/HomePage'
 import Cart from './components/Cart/Cart'
@@ -7,6 +7,8 @@ import ProductPage from './pages/ProductPage';
 import Success from './pages/Success';
 import Cancel from './pages/Cancel';
 import Register from './components/Register/Register';
+
+import './App.css';
 
 function App() {
   return (

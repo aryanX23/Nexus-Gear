@@ -1,12 +1,17 @@
 import React, { useState } from "react";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faDiscord, faGithub, faDribbble } from '@fortawesome/free-brands-svg-icons';
+
 import "./Newsletter.css";
+
 const Newsletter = () => {
 	const [email, setEmail] = useState();
+
 	const handleChange = (event) => {
 		setEmail(event.target.value);
 	};
+	
 	return (
 		<div className="newsletter-section">
 			<div className="newsletter-content">
@@ -31,16 +36,16 @@ const Newsletter = () => {
                 <br />
 				<span className="social-icons">
 					<div className="icon">
-						<FontAwesomeIcon icon={faDribbble} size={14} />
+						<FontAwesomeIcon icon={faDribbble} size={"lg"} />
 					</div>
 					<div className="icon">
-						<FontAwesomeIcon icon={faFacebook} size={14} />
+						<FontAwesomeIcon icon={faFacebook} size={"lg"} />
 					</div>
 					<div className="icon">
-						<FontAwesomeIcon icon={faGithub} size={14} />
+						<FontAwesomeIcon icon={faGithub} size={"lg"} />
 					</div>
 					<div className="icon">
-						<FontAwesomeIcon icon={faDiscord} size={14} />
+						<FontAwesomeIcon icon={faDiscord} size={"lg"} />
 					</div>
 				</span>
 			</div>

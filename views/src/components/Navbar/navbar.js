@@ -1,24 +1,28 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Logo from "../../Assets/NexusGear-Black.png";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch, faCartShopping } from "@fortawesome/free-solid-svg-icons";
-import "./navbar.css";
+import { ToastContainer } from 'react-toastify';
+
 import Searchbar from "./Searchbar";
 import Cart from "../Cart/Cart";
-import AuthContext from "../../context/AuthProvider";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+
+import Logo from "../../Assets/NexusGear-Black.png";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch, faCartShopping, faBars, faTimes } from "@fortawesome/free-solid-svg-icons";
+
+import "./navbar.css";
+
 const Navbar = () => {
-    const [searchVisible, setSearchVisible] = useState(false);
-    const { auth } = useContext(AuthContext);
-    const axiosprivate = useAxiosPrivate();
     const navigate = useNavigate();
+
+    const [searchVisible, setSearchVisible] = useState(false);
+    const authenticated = localStorage.getItem("authenticated");
 
     const toggleSearchBar = () => {
         setSearchVisible(!searchVisible);
     };
 
     const [isCartOpen, setIsCartOpen] = useState(false);
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
     const toggleCart = () => {
         setIsCartOpen(!isCartOpen);
@@ -27,26 +31,99 @@ const Navbar = () => {
     const handleLoginClick = () => {
         navigate("/login");
     };
+
     const handleLogOutClick = () => {
-        axiosprivate.get("/api/logout/", { withCredentials: true }).then(response => {
-            console.log(response);
-            window.location.reload();
-        });
+        localStorage.clear();
+        window.location.reload();
+    };
+
+    const handleToggleMobileMenu = () => {
+        setIsMobileMenuOpen(!isMobileMenuOpen);
     };
 
     return (
-        <nav className="p-1 app__bg sticky top-0 z-50">
+        <nav className="p-2 sticky backdrop-filter backdrop-blur-lg top-0 z-50 shadow-md">
+            <ToastContainer />
             <div className="container mx-auto">
                 <div className="flex justify-between items-center">
-                    {/* Make the logo a link to the homepage */}
                     <Link to="/" className="text-blue-800 text-xl mx-4">
                         <img src={Logo} alt="Logo" className="logo-image" />
                     </Link>
-                    <ul className="flex space-x-20 mx-auto">
+                    <div className="hidden lg:flex space-x-20 mx-auto">
+                        <ul className="flex space-x-8">
+                            <li>
+                                <a
+                                    href="#hero"
+                                    className="text-black-200 font-bold hover:text-purple-400"
+                                >
+                                    HOME
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#footer"
+                                    className="text-black-200 font-bold hover:text-purple-400"
+                                >
+                                    ABOUT
+                                </a>
+                            </li>
+                            <li>
+                                <a
+                                    href="#categories"
+                                    className="text-black-200 font-bold hover:text-purple-400"
+                                >
+                                    CATEGORIES
+                                </a>
+                            </li>
+                        </ul>
+                        <button onClick={toggleSearchBar}>
+                            <FontAwesomeIcon
+                                icon={faSearch}
+                                className="text-black-100"
+                                color="black"
+                            />
+                        </button>
+                        {searchVisible && (
+                            <div className="absolute top-0 right-0 mt-5 mr-64">
+                                <Searchbar />
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex lg:hidden">
+                        <button onClick={handleToggleMobileMenu} className="p-2">
+                            <FontAwesomeIcon icon={isMobileMenuOpen ? faTimes : faBars} className="text-black-100" />
+                        </button>
+                    </div>
+                    <div className="hidden lg:flex mr-10 items-center space-x-4">
+                        {authenticated ? (
+                            <button
+                                onClick={handleLogOutClick}
+                                className="text-black-200 font-bold hover:text-blue-400"
+                            >
+                                LOGOUT
+                            </button>
+                        ) : (
+                            <button
+                                onClick={handleLoginClick}
+                                className="text-black-200 font-bold hover:text-blue-400"
+                            >
+                                LOGIN
+                            </button>
+                        )}
+                        <button onClick={toggleCart}>
+                            <FontAwesomeIcon icon={faCartShopping} color="black" />
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {isMobileMenuOpen && (
+                <div className="lg:hidden bg-white w-full px-4 py-2 absolute top-14 left-0 shadow-md transition-all duration-300 transform ease-in-out">
+                    <ul className="flex flex-col space-y-4">
                         <li>
                             <a
                                 href="#hero"
-                                className="text-gray-200 font-bold hover:text-purple-400"
+                                className="text-black-200 font-bold hover:text-purple-400"
+                                onClick={handleToggleMobileMenu}
                             >
                                 HOME
                             </a>
@@ -54,7 +131,8 @@ const Navbar = () => {
                         <li>
                             <a
                                 href="#footer"
-                                className="text-gray-200 font-bold hover:text-purple-400"
+                                className="text-black-200 font-bold hover:text-purple-400"
+                                onClick={handleToggleMobileMenu}
                             >
                                 ABOUT
                             </a>
@@ -62,53 +140,46 @@ const Navbar = () => {
                         <li>
                             <a
                                 href="#categories"
-                                className="text-gray-200 font-bold hover:text-purple-400"
+                                className="text-black-200 font-bold hover:text-purple-400"
+                                onClick={handleToggleMobileMenu}
                             >
                                 CATEGORIES
                             </a>
                         </li>
+                        <li>
+                            {authenticated ? (
+                                <button
+                                    onClick={() => {
+                                        handleLogOutClick();
+                                        handleToggleMobileMenu();
+                                    }}
+                                    className="text-black-200 font-bold hover:text-blue-400"
+                                >
+                                    LOGOUT
+                                </button>
+                            ) : (
+                                <button
+                                    onClick={() => {
+                                        handleLoginClick();
+                                        handleToggleMobileMenu();
+                                    }}
+                                    className="text-black-200 font-bold hover:text-blue-400"
+                                >
+                                    LOGIN
+                                </button>
+                            )}
+                        </li>
+                        <li>
+                            <button onClick={toggleCart}>
+                                <FontAwesomeIcon icon={faCartShopping} color="black" />
+                            </button>
+                        </li>
                     </ul>
-                    <div className="mx-auto">
-                        <button onClick={toggleSearchBar}>
-                            <FontAwesomeIcon
-                                icon={faSearch}
-                                className="text-gray-100"
-                            />
-                        </button>
-                        {/* Replace the existing search input with the SearchBar component */}
-                        {searchVisible && (
-                            <div className="absolute top-0 right-0 mt-5 mr-64">
-                                <Searchbar />
-                            </div>
-                        )}
-                    </div>
-                    <div className="mr-10">
-                        {auth?.authenticated ? (
-                            <button
-                                onClick={handleLogOutClick}
-                                className="text-gray-200 font-bold hover:text-blue-400 mr-20"
-                            >
-                                LOGOUT
-                            </button>
-                        ) : (
-                            <button
-                                onClick={handleLoginClick}
-                                className="text-gray-200 font-bold hover:text-blue-400 mr-20"
-                            >
-                                LOGIN
-                            </button>
-                        )}
-                        <button onClick={toggleCart}>
-                            <FontAwesomeIcon icon={faCartShopping} color="white"/>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            {isCartOpen && (
-                <div className="fixed inset-y-0 right-0 w-64shadow-lg transform transition-transform ease-in-out duration-300">
-                    <Cart />
                 </div>
             )}
+            <div className={` shadow-lg transform transition-transform ease-in-out duration-300 ${isCartOpen ? "translate-x-0" : "translate-x-full"}`}>
+                <Cart setIsCartOpen={setIsCartOpen} isCartOpen={isCartOpen} />
+            </div>
         </nav>
     );
 };

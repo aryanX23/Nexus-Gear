@@ -1,16 +1,21 @@
-// ProductDetailPage.js
 import React, { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
+
 import Axios from "../../api/axios";
 import { useCart } from "../../context/CartContext";
 
 const ProductDetailPage = (props) => {
-    const [product, setProduct] = useState(null);
     const { addToCart } = useCart();
     const navigate = useNavigate();
+
+    const [product, setProduct] = useState(null);
+
     useEffect(() => {
-        if (!props.productId)
+        if (!props.productId) {
             navigate('/');
+            return;
+        }
+
         const fetchProductData = async () => {
             try {
                 Axios({
@@ -23,7 +28,7 @@ const ProductDetailPage = (props) => {
                     },
                 }).then((response) => {
                   const data = response.data;
-                  if (data.response === "success") {
+                  if (data.status === "success") {
                     setProduct(prev => data);
                   }
                   else {
