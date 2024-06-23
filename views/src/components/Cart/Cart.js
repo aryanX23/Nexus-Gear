@@ -67,7 +67,7 @@ export default function Cart(props) {
     useEffect(() => {
         var temp = 0.0;
         for (var i = 0; i < cartItems.length; i++)
-            temp += cartItems[i]?.price * cartItems[i]?.quantity;
+            temp += cartItems[i]?.price;
         setSubTotal((prev) => temp);
     }, [cartItems]);
 

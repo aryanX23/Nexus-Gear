@@ -46,6 +46,7 @@ export function CartProvider({ children }) {
                 for (var i = 0; i < temp.length; i++) {
                     if (temp[i]._id === product._id) {
                         temp[i].quantity += product.quantity;
+                        temp[i].price += product.price;
                         handleUpdate(temp);
                         return temp;
                     }
