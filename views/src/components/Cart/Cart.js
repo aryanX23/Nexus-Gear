@@ -11,7 +11,7 @@ export default function Cart(props) {
     const { setIsCartOpen: setOpen, isCartOpen: open } = props;
     const navigate = useNavigate();
     const axiosprivate = useAxiosPrivate();
-    const { cartItems, removeFromCart } = useCart();
+    const { cartItems, removeFromCart, change } = useCart();
 
     const [subTotal, setSubTotal] = useState(0.0);
 
@@ -69,7 +69,7 @@ export default function Cart(props) {
         for (var i = 0; i < cartItems.length; i++)
             temp += cartItems[i]?.price;
         setSubTotal((prev) => temp);
-    }, [cartItems]);
+    }, [change, cartItems?.length]);
 
     return (
         <Transition.Root show={open} as={Fragment}>

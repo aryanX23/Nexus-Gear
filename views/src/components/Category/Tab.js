@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import { useCart } from "../../context/CartContext";
@@ -35,7 +35,12 @@ const Tabs = () => {
                     const payload = data.length ? (
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             {data.map((item) => (
-                                <div className="w-full max-w-sm h-120 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 pb-2.5">
+                                <div onClick={() => {
+                                    setCurrentProduct(item._id);
+                                    navigate("/productPage");
+                                }}
+                                    key={item._id}
+                                    className="w-full max-w-sm h-120 bg-white rounded-lg shadow-lg transition-transform transform hover:scale-105 pb-2.5">
                                     <div className="relative h-2/5">
                                         <img className="p-4 rounded-t-lg h-full w-full object-cover" src={item.imageurl} alt="Product" />
                                         <div className="absolute top-4 right-4 bg-white rounded-full p-1 shadow-md">
@@ -47,10 +52,6 @@ const Tabs = () => {
                                     <div className="p-4 sm:p-6 h-3/5 flex flex-col justify-between">
                                         <span
                                             className="block text-lg sm:text-xl font-semibold text-gray-900 cursor-pointer hover:text-indigo-500 transition-colors"
-                                            onClick={() => {
-                                                setCurrentProduct(item._id);
-                                                navigate("/productPage");
-                                            }}
                                         >
                                             {item.name}
                                         </span>
@@ -76,17 +77,28 @@ const Tabs = () => {
                                                     price: item.price,
                                                     imageurl: item.imageurl,
                                                 });
-                                            }
-                                            }
+                                            }}
                                         >
                                             Add to Cart
                                         </button>
                                     </div>
                                 </div>
-
                             ))}
                         </div>
-                    ) : <h1>Nothing to Display!</h1>;
+                    ) : (
+                        <div className="flex flex-col items-center justify-center h-96">
+                            <img src="https://via.placeholder.com/150" alt="No Products" className="mb-4 w-1/4" />
+                            <h1 className="text-2xl font-bold mb-2">Nothing to Display!</h1>
+                            <p className="text-gray-600 mb-6">It looks like there are no products in this category at the moment.</p>
+                            <button
+                                className="bg-indigo-500 text-white rounded-md py-2 px-4 hover:bg-indigo-600 transition-colors"
+                                onClick={() => window.location.reload()}
+                            >
+                                Go to Home
+                            </button>
+                        </div>
+                    );
+
 
                     setActiveCategory(payload);
                 });

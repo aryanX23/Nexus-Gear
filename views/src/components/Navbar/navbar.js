@@ -49,7 +49,7 @@ const Navbar = () => {
                     <Link to="/" className="text-blue-800 text-xl mx-4">
                         <img src={Logo} alt="Logo" className="logo-image" />
                     </Link>
-                    <div className="hidden lg:flex space-x-20 mx-auto">
+                    {/* <div className="hidden lg:flex space-x-20 mx-auto">
                         <ul className="flex space-x-8">
                             <li>
                                 <a
@@ -88,7 +88,7 @@ const Navbar = () => {
                                 <Searchbar />
                             </div>
                         )}
-                    </div>
+                    </div> */}
                     <div className="flex lg:hidden">
                         <button onClick={handleToggleMobileMenu} className="p-2">
                             <FontAwesomeIcon icon={isMobileMenuOpen ? faTimes : faBars} className="text-black-100" />
@@ -120,33 +120,6 @@ const Navbar = () => {
                 <div className="lg:hidden bg-white w-full px-4 py-2 absolute top-14 left-0 shadow-md transition-all duration-300 transform ease-in-out">
                     <ul className="flex flex-col space-y-4">
                         <li>
-                            <a
-                                href="#hero"
-                                className="text-black-200 font-bold hover:text-purple-400"
-                                onClick={handleToggleMobileMenu}
-                            >
-                                HOME
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#footer"
-                                className="text-black-200 font-bold hover:text-purple-400"
-                                onClick={handleToggleMobileMenu}
-                            >
-                                ABOUT
-                            </a>
-                        </li>
-                        <li>
-                            <a
-                                href="#categories"
-                                className="text-black-200 font-bold hover:text-purple-400"
-                                onClick={handleToggleMobileMenu}
-                            >
-                                CATEGORIES
-                            </a>
-                        </li>
-                        <li>
                             {authenticated ? (
                                 <button
                                     onClick={() => {
@@ -172,6 +145,7 @@ const Navbar = () => {
                         <li>
                             <button onClick={toggleCart}>
                                 <FontAwesomeIcon icon={faCartShopping} color="black" />
+                                Cart
                             </button>
                         </li>
                     </ul>

@@ -15,6 +15,7 @@ export function CartProvider({ children }) {
     const location = useLocation();
 
     const [cartItems, setCartItems] = useState([]);
+    const [change, setChange] = useState(false);
     const [currentProduct, setCurrentProduct] = useState("");
 
     const handleUpdate = async (temp) => {
@@ -41,6 +42,7 @@ export function CartProvider({ children }) {
 
     const addToCart = async (product) => {
         try {
+            setChange(prev => !prev);
             setCartItems((prev) => {
                 var temp = prev;
                 for (var i = 0; i < temp.length; i++) {
@@ -76,6 +78,7 @@ export function CartProvider({ children }) {
                 removeFromCart,
                 currentProduct,
                 setCurrentProduct,
+                change,
             }}
         >
             {children}

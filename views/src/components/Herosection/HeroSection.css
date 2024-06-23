@@ -1,13 +1,74 @@
-.hero-section-main{
+.hero-section-main {
+    background: linear-gradient(to right, #4f46e5, #8b5cf6);
+    color: white;
+    padding: 2rem 1rem;
+    border-radius: 0.5rem;
+    animation: fadeIn 1s ease-in-out;
+}
+
+.hero-section-main .container {
     background: white;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
 }
 
-.herosection-text{
-    margin: 0 auto;
-    max-width: var(--max-content);
-    padding: calc(var(--spacing) *2 ) ;
-    text-align:left;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
+.hero-section-main:hover .container {
+    transform: scale(1.02);
 }
 
+.image-overlay {
+    position: relative;
+}
 
+.image-overlay::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 0.5rem;
+    z-index: 1;
+}
+
+.image-overlay img {
+    border-radius: 0.5rem;
+    z-index: 2;
+    position: relative;
+}
+
+.shop-now-button {
+    background-color: #8b5cf6;
+    color: white;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    display: inline-block;
+    margin-top: 1rem;
+}
+
+.shop-now-button:hover {
+    background-color: #4f46e5;
+    transform: scale(1.05);
+}
+
+.hero-section-main h1,
+.hero-section-main p {
+    color: black;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
