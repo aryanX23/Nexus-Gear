@@ -94,7 +94,7 @@ async function handlePayment(req, res) {
             quantity: item.quantity,
             price_data: {
                 currency: "inr",
-                unit_amount: item.price * 100,
+                unit_amount: (item.price * 100) / item.quantity,
                 product_data: {
                     description: item.description,
                     name: item.name,
