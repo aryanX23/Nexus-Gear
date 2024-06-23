@@ -13,7 +13,7 @@ module.exports = () => {
   app.use(
     cors({
       credentials: true,
-      origin: process.env.ORIGIN_URL,
+      origin: [process.env.ORIGIN_URL, process.env.STRIPE_ORIGIN_URL],
       exposedHeaders: ['authorization', 'refresh-token'],
     })
   );
