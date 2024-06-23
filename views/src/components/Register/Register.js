@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
-
+import { useNavigate } from 'react-router-dom';
 import Axios from '../../api/axios';
-
 import logo from '../../Assets/NexusGear-Black.png';
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const navigate = useNavigate();
@@ -12,165 +11,220 @@ const Register = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
-    const [submitted, setSubmitted] = useState(false);
-    const [error, setError] = useState(false);
-    const [message, setMessage] = useState("Please enter all the fields");
-
-    const handleName = (e) => {
-        setName(e.target.value);
-        setSubmitted(false);
-    };
-
-    const handleEmail = (e) => {
-        setEmail(e.target.value);
-        setSubmitted(false);
-    };
-
-    const handlePassword = (e) => {
-        setPassword(e.target.value);
-        setSubmitted(false);
-    };
-
-    const handleConfirmPassword = (e) => {
-        setConfirmPassword(e.target.value);
-        setSubmitted(false);
-    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (name === '' || email === '' || password === '' || confirmPassword === '') {
-            setError(true);
-        } else {
-            try {
-                await Axios.post(
-                    '/api/users/register',
-                    JSON.stringify({ name, email, password }),
-                    {
-                        headers: { "Content-Type": "application/json" },
-                    }
-                );
+            toast.error("Please fill in all fields", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
 
-                setMessage(name + " Registered Successfully!");
-                setSubmitted(true);
-                setError(false);
+        if (password !== confirmPassword) {
+            toast.error("Passwords do not match", {
+                position: "top-right",
+                autoClose: 3000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+            });
+            return;
+        }
+
+        try {
+            const response = await Axios.post(
+                '/api/users/register',
+                JSON.stringify({ name, email, password }),
+                {
+                    headers: { "Content-Type": "application/json" },
+                }
+            );
+
+            if (response.data.status === "success") {
+                toast.success(`${name} registered successfully!`, {
+                    position: "top-right",
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
 
                 setTimeout(() => {
-                    setSubmitted(false);
-                    setMessage("");
-                    setName("");
-                    setEmail("");
-                    setPassword("");
                     navigate("/login");
-                }, 3000);
+                }, 2000);
             }
-            catch (e) {
-                if (e.request.status === 403) {
-                    setMessage("User Already Exists!");
-                    setError(true);
-                    setTimeout(() => {
-                        setError(false);
-                        setMessage("Please enter all the fields");
-                        setName("");
-                        setEmail("");
-                        setPassword("");
-                        navigate("/login");
-                    }, 3000);
-
-                }
-                else {
-                    setMessage("Server Error! Please Try Again Later");
-                    setError(true);
-                    setTimeout(() => {
-                        setError(false);
-                        setMessage("Please enter all the fields");
-                        setName("");
-                        setEmail("");
-                        setPassword("");
-                    }, 3000);
-                }
+        } catch (error) {
+            if (error.response && error.response.status === 403) {
+                toast.error("User already exists!", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
+            } else {
+                toast.error("Server error. Please try again later.", {
+                    position: "top-right",
+                    autoClose: 3000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                });
             }
         }
     };
 
-    const successMessage = () => {
-        return (
-            <div
-                className="success"
-                style={{
-                    display: submitted ? '' : 'none',
-                }}>
-                <h1>User {name} successfully registered!!</h1>
-            </div>
-        );
-    };
-
-    const errorMessage = () => {
-        return (
-            <div
-                className="error"
-                style={{
-                    display: error ? '' : 'none',
-                }}>
-                <h1>{message}</h1>
-            </div>
-        );
-    };
-
-
     return (
-        <section className="bg-slate-900">
-            <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-                <a
-                    href="/"
-                    className="flex items-center mb-6 text-2xl font-semibold  opacity-90 rounded-lg"
-                >
-                    <img className="w-auto h-16 mr-2" src={logo} alt="logo" />
-                </a>
-                <div className="w-full  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 backdrop-blur-sm dark:bg-gray-800 dark:border-gray-700">
-                    <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
-                        <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                            Create an account
-                        </h1>
-                        <div className="messages text-white">
-                            {errorMessage()}
-                            {successMessage()}
+        <div className="min-h-screen flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative">
+            {/* Blur Gradient Background */}
+            <div className="absolute inset-0 bg-gradient-to-br from-blue-400 to-purple-500 opacity-75"></div>
+            <div className="absolute inset-0 bg-white/30 backdrop-blur-xl"></div>
+
+            <div className="sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+                <img className="mx-auto h-16 w-auto" src={logo} alt="NexusGear" />
+                <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+                    Create your account
+                </h2>
+            </div>
+
+            <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md relative z-10">
+                <div className="bg-white py-8 px-4 shadow-lg sm:rounded-lg sm:px-10 border border-gray-200">
+                    <form className="space-y-6" onSubmit={handleSubmit}>
+                        <div>
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                Full Name
+                            </label>
+                            <input
+                                id="name"
+                                name="name"
+                                type="text"
+                                required
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
                         </div>
-                        <form className="space-y-4 md:space-y-6" action="#">
-                            <div>
-                                <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Full Name</label>
-                                <input type="name" name="name" value={name} id="name" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name" required onChange={handleName} />
+
+                        <div>
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                                Email address
+                            </label>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
+                                required
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                                Password
+                            </label>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                autoComplete="new-password"
+                                required
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
+                        </div>
+
+                        <div>
+                            <label htmlFor="confirm-password" className="block text-sm font-medium text-gray-700">
+                                Confirm password
+                            </label>
+                            <input
+                                id="confirm-password"
+                                name="confirm-password"
+                                type="password"
+                                autoComplete="new-password"
+                                required
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                            />
+                        </div>
+
+                        <div className="flex items-center">
+                            <input
+                                id="terms"
+                                name="terms"
+                                type="checkbox"
+                                required
+                                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
+                            />
+                            <label htmlFor="terms" className="ml-2 block text-sm text-gray-900">
+                                I agree to the{' '}
+                                <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                                    Terms and Conditions
+                                </a>
+                            </label>
+                        </div>
+
+                        <div>
+                            <button
+                                type="submit"
+                                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                            >
+                                Create account
+                            </button>
+                        </div>
+                    </form>
+
+                    <div className="mt-6">
+                        <div className="relative">
+                            <div className="absolute inset-0 flex items-center">
+                                <div className="w-full border-t border-gray-300" />
                             </div>
-                            <div>
-                                <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email Id</label>
-                                <input type="email" name="email" value={email} id="email" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="name@company.com" required onChange={handleEmail} />
+                            <div className="relative flex justify-center text-sm">
+                                <span className="px-2 bg-white text-gray-500">Or</span>
                             </div>
-                            <div>
-                                <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
-                                <input type="password" name="password" value={password} id="password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required onChange={handlePassword} />
-                            </div>
-                            <div>
-                                <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm password</label>
-                                <input type="password" name="confirm-password" value={confirmPassword} id="confirm-password" placeholder="••••••••" className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required onChange={handleConfirmPassword} />
-                            </div>
-                            <div className="flex items-start">
-                                <div className="flex items-center h-5">
-                                    <input id="terms" aria-describedby="terms" type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800" required />
-                                </div>
-                                <div className="ml-3 text-sm">
-                                    <label htmlFor="terms" className="font-light text-gray-500 dark:text-gray-300">I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a></label>
-                                </div>
-                            </div>
-                            <button type="submit" className="submit-button w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800" onClick={handleSubmit}>Create an account</button>
-                            <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                                Already have an account? <a href="/login" className="font-medium text-primary-600 hover:underline dark:text-primary-500">Login here</a>
+                        </div>
+
+                        <div className="mt-6 text-center">
+                            <p className="text-sm text-gray-600">
+                                Already have an account?{' '}
+                                <button
+                                    onClick={() => navigate("/login")}
+                                    className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
+                                >
+                                    Sign in
+                                </button>
                             </p>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
-        </section>
+        </div>
+    );
+};
 
-    )
-}
-
-export default Register
+export default Register;

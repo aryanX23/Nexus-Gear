@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 
 import LoginPage from './components/Login/LoginPage'
 import HomePage from './pages/HomePage'
@@ -13,6 +14,7 @@ import './App.css';
 function App() {
   return (
       <div>
+          <ToastContainer />
           <Routes>
               {/* Specify components for each route */}
               <Route path="/productPage" element={<ProductPage />} />

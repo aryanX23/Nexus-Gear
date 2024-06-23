@@ -1,5 +1,10 @@
-.submit-button{
-    color:#fff!important ;
-    background-color: #6557c2;
-}
+@media (max-width: 640px) {
+    .sm\:px-6 {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 
+    .sm\:w-full {
+        width: 90%;
+    }
+}
