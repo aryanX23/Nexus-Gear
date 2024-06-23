@@ -1,13 +1,9 @@
-// const path = require("path");
 require("dotenv").config();
 
 const connectMongoDb = require("./middlewares/mongoose");
 
 const { PORT = 8000 } = process.env || {};
 // Package Import and variable initializations
-
-// const buildPath = path.normalize(path.join(__dirname, './views/build'));
-// app.use(express.static(buildPath));
 
 //Database Connection and Server Initialization
 const db = connectMongoDb();
