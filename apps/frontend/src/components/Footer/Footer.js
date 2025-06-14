@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faDiscord, faTwitter, faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
-// Add these two lines to import the toast function and its CSS
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -14,9 +13,7 @@ const Footer = () => {
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
-    // Handle your newsletter submission logic here
     console.log("Subscribed with:", email);
-    // This line will now work correctly
     toast.success(`Thank you for subscribing!`);
     setEmail('');
   };
@@ -58,7 +55,6 @@ const Footer = () => {
   return (
     <footer className="bg-slate-50 border-t border-slate-200">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Top Section: Newsletter and Info */}
         <div className="py-12 grid grid-cols-1 lg:grid-cols-12 gap-8">
           <div className="lg:col-span-5">
             <div className="flex items-center mb-4">
@@ -96,7 +92,6 @@ const Footer = () => {
 
         <hr className="border-slate-200" />
 
-        {/* Middle Section: Link Columns */}
         <div className="py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
             <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">Products</h3>
@@ -140,7 +135,6 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Socials */}
         <div className="py-8 flex flex-col-reverse md:flex-row items-center justify-between border-t border-slate-200">
           <p className="text-sm text-slate-500 mt-4 md:mt-0">
             &copy; {new Date().getFullYear()} NexusGear, Inc. All Rights Reserved.
