@@ -8,18 +8,18 @@ const { PORT = 8000 } = process.env || {};
 //Database Connection and Server Initialization
 const db = connectMongoDb();
 
-db.on('error', (err) => {
-    console.log('Mongoose error', err);
+db.on("error", (err) => {
+  console.log("Mongoose error", err);
 });
 
-db.once('open', async () => {
-    const setupExpress = require('./configs/express');
-    const app = setupExpress();
+db.once("open", async () => {
+  const setupExpress = require("./configs/express");
+  const app = setupExpress();
 
-    app.set('port', PORT);
-    app.listen(PORT, () => {
-        console.log(`Server is listening on port ${PORT}!`);
-    });
+  app.set("port", PORT);
+  app.listen(PORT, () => {
+    console.log(`Server is listening on port ${PORT}!`);
+  });
 
-    console.log(`Connected to DB!`);
+  console.log(`Connected to DB!`);
 });

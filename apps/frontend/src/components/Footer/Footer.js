@@ -1,21 +1,27 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faDiscord, faTwitter, faGithub, faInstagram } from '@fortawesome/free-brands-svg-icons';
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faFacebook,
+  faDiscord,
+  faTwitter,
+  faGithub,
+  faInstagram,
+} from "@fortawesome/free-brands-svg-icons";
+import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import Logo from '../../Assets/NexusGear-Black.png';
+import Logo from "../../Assets/NexusGear-Black.png";
 
 const Footer = () => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState("");
 
   const handleNewsletterSubmit = (e) => {
     e.preventDefault();
     console.log("Subscribed with:", email);
     toast.success(`Thank you for subscribing!`);
-    setEmail('');
+    setEmail("");
   };
 
   const footerLinks = {
@@ -59,17 +65,27 @@ const Footer = () => {
           <div className="lg:col-span-5">
             <div className="flex items-center mb-4">
               <img src={Logo} className="h-10 w-auto" alt="NexusGear Logo" />
-              <span className="ml-3 text-2xl font-bold text-slate-900">NexusGear</span>
+              <span className="ml-3 text-2xl font-bold text-slate-900">
+                NexusGear
+              </span>
             </div>
             <p className="text-slate-600 max-w-md">
-              The ultimate destination for premium gaming gear. Elevate your play with our high-performance hardware.
+              The ultimate destination for premium gaming gear. Elevate your
+              play with our high-performance hardware.
             </p>
           </div>
 
           <div className="lg:col-span-6 lg:col-start-8">
-            <h3 className="text-lg font-semibold text-slate-900">Subscribe to our newsletter</h3>
-            <p className="mt-2 text-slate-600">Get the latest updates on new products and upcoming sales.</p>
-            <form onSubmit={handleNewsletterSubmit} className="mt-4 flex flex-col sm:flex-row gap-2">
+            <h3 className="text-lg font-semibold text-slate-900">
+              Subscribe to our newsletter
+            </h3>
+            <p className="mt-2 text-slate-600">
+              Get the latest updates on new products and upcoming sales.
+            </p>
+            <form
+              onSubmit={handleNewsletterSubmit}
+              className="mt-4 flex flex-col sm:flex-row gap-2"
+            >
               <input
                 type="email"
                 name="email"
@@ -94,41 +110,69 @@ const Footer = () => {
 
         <div className="py-10 grid grid-cols-2 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">Products</h3>
+            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
+              Products
+            </h3>
             <ul className="mt-4 space-y-3">
-              {footerLinks.products.map(link => (
+              {footerLinks.products.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-base text-slate-600 hover:text-blue-600 transition">{link.name}</a>
+                  <a
+                    href={link.href}
+                    className="text-base text-slate-600 hover:text-blue-600 transition"
+                  >
+                    {link.name}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">Company</h3>
+            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
+              Company
+            </h3>
             <ul className="mt-4 space-y-3">
-              {footerLinks.company.map(link => (
+              {footerLinks.company.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-base text-slate-600 hover:text-blue-600 transition">{link.name}</a>
+                  <a
+                    href={link.href}
+                    className="text-base text-slate-600 hover:text-blue-600 transition"
+                  >
+                    {link.name}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">Support</h3>
+            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
+              Support
+            </h3>
             <ul className="mt-4 space-y-3">
-              {footerLinks.support.map(link => (
+              {footerLinks.support.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-base text-slate-600 hover:text-blue-600 transition">{link.name}</a>
+                  <a
+                    href={link.href}
+                    className="text-base text-slate-600 hover:text-blue-600 transition"
+                  >
+                    {link.name}
+                  </a>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">Legal</h3>
+            <h3 className="text-sm font-semibold text-slate-900 uppercase tracking-wider">
+              Legal
+            </h3>
             <ul className="mt-4 space-y-3">
-              {footerLinks.legal.map(link => (
+              {footerLinks.legal.map((link) => (
                 <li key={link.name}>
-                  <a href={link.href} className="text-base text-slate-600 hover:text-blue-600 transition">{link.name}</a>
+                  <a
+                    href={link.href}
+                    className="text-base text-slate-600 hover:text-blue-600 transition"
+                  >
+                    {link.name}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -137,10 +181,11 @@ const Footer = () => {
 
         <div className="py-8 flex flex-col-reverse md:flex-row items-center justify-between border-t border-slate-200">
           <p className="text-sm text-slate-500 mt-4 md:mt-0">
-            &copy; {new Date().getFullYear()} NexusGear, Inc. All Rights Reserved.
+            &copy; {new Date().getFullYear()} NexusGear, Inc. All Rights
+            Reserved.
           </p>
           <div className="flex items-center space-x-5">
-            {socialLinks.map(link => (
+            {socialLinks.map((link) => (
               <a
                 key={link.label}
                 href={link.href}

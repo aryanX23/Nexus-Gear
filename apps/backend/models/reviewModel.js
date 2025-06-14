@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const reviewSchema = mongoose.Schema({
   reviewId: {
@@ -7,7 +7,7 @@ const reviewSchema = mongoose.Schema({
   },
   reviewerName: {
     type: String,
-    required: true
+    required: true,
   },
   userId: {
     type: String,
@@ -20,12 +20,11 @@ const reviewSchema = mongoose.Schema({
   },
   productId: {
     type: String,
-    required: true
+    required: true,
   },
   tag: {
     type: String,
-    required: true
+    required: true,
   },
-
 });
-module.exports = { Review: mongoose.model('Review', reviewSchema) }; 
+module.exports = { Review: mongoose.model("Review", reviewSchema) };

@@ -1,31 +1,31 @@
-import { Route, Routes } from 'react-router-dom';
-import { ToastContainer } from 'react-toastify';
+import { Route, Routes } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
 
-import LoginPage from './components/Login/LoginPage'
-import HomePage from './pages/HomePage'
-import Cart from './components/Cart/Cart'
-import ProductPage from './pages/ProductPage';
-import Success from './pages/Success';
-import Cancel from './pages/Cancel';
-import Register from './components/Register/Register';
+import LoginPage from "./components/Login/LoginPage";
+import HomePage from "./pages/HomePage";
+import Cart from "./components/Cart/Cart";
+import ProductPage from "./pages/ProductPage";
+import Success from "./pages/Success";
+import Cancel from "./pages/Cancel";
+import Register from "./components/Register/Register";
 
-import './App.css';
+import "./App.css";
 
 function App() {
   return (
-      <div>
-          <ToastContainer />
-          <Routes>
-              {/* Specify components for each route */}
-              <Route path="/productPage" element={<ProductPage />} />
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<Register />}/>
-              <Route path="/checkout/success" element={<Success />} />
-              <Route path="/checkout/cancel" element={<Cancel />} />
-              <Route path="/Cart" element={<Cart />} />
-              <Route path="/" element={<HomePage />} />
-          </Routes>
-      </div>
+    <div>
+      <ToastContainer />
+      <Routes>
+        {/* Specify components for each route */}
+        <Route path="/productPage" element={<ProductPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/checkout/success" element={<Success />} />
+        <Route path="/checkout/cancel" element={<Cancel />} />
+        <Route path="/Cart" element={<Cart />} />
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </div>
   );
 }
 

@@ -10,6 +10,7 @@
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "eslint": "^9.29.0",
     "eslint-config-prettier": "^10.1.5",
     "eslint-plugin-prettier": "^5.4.1",

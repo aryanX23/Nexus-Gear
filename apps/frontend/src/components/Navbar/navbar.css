@@ -1,11 +1,11 @@
 .nav-link {
-    @apply text-gray-700 hover:text-blue-500 font-medium transition-colors duration-200;
+  @apply text-gray-700 hover:text-blue-500 font-medium transition-colors duration-200;
 }
 
 .nav-button {
-    @apply px-4 py-2 rounded-md font-medium transition-colors duration-200 hover:bg-blue-100;
+  @apply px-4 py-2 rounded-md font-medium transition-colors duration-200 hover:bg-blue-100;
 }
 
 .nav-icon {
-    @apply text-gray-700 hover:text-blue-500 transition-colors duration-200;
+  @apply text-gray-700 hover:text-blue-500 transition-colors duration-200;
 }

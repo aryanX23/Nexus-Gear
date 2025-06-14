@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const webhookSchema = mongoose.Schema({
   webhookId: {
     type: String,
@@ -8,6 +8,6 @@ const webhookSchema = mongoose.Schema({
   status: {
     type: String,
     default: "pending",
-  }
+  },
 });
-module.exports = { Webhook: mongoose.model('Webhooks', webhookSchema) }; 
+module.exports = { Webhook: mongoose.model("Webhooks", webhookSchema) };

@@ -9,7 +9,7 @@ const errorHandler = (req, res, err) => {
     return res.status(401).send({
       message,
       code,
-      status: "fail"
+      status: "fail",
     });
   }
 
@@ -17,11 +17,17 @@ const errorHandler = (req, res, err) => {
     return res.status(401).send({
       message,
       code,
-      status: "fail"
+      status: "fail",
     });
   }
 
-  return res.status(500).send({ status: "fail", message: err.message, code: "INTERNAL_SERVER_ERROR" });
-}
+  return res
+    .status(500)
+    .send({
+      status: "fail",
+      message: err.message,
+      code: "INTERNAL_SERVER_ERROR",
+    });
+};
 
 module.exports = { errorHandler };

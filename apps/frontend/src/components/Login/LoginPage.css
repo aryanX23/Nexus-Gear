@@ -1,10 +1,10 @@
 @media (max-width: 640px) {
-    .sm\:px-6 {
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
+  .sm\:px-6 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 
-    .sm\:w-full {
-        width: 90%;
-    }
+  .sm\:w-full {
+    width: 90%;
+  }
 }

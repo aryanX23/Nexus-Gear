@@ -1,6 +1,6 @@
-import React from 'react';
-import Tabs from './Tab';
-import './Category.css';
+import React from "react";
+import Tabs from "./Tab";
+import "./Category.css";
 
 const Category = () => {
   return (

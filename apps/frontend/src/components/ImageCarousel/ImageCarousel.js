@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 
-import './ImageCarousel.css';
+import "./ImageCarousel.css";
 
 const ImageCarousel = ({ images, autoScrollInterval = 3000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -25,7 +25,11 @@ const ImageCarousel = ({ images, autoScrollInterval = 3000 }) => {
 
   return (
     <div className="carousel-container">
-      <img src={images[currentIndex]} alt={`Image ${currentIndex}`} className="carousel-image" />
+      <img
+        src={images[currentIndex]}
+        alt={`Image ${currentIndex}`}
+        className="carousel-image"
+      />
     </div>
   );
 };

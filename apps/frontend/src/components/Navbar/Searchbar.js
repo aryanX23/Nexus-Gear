@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import Autosuggest from 'react-autosuggest';
+import React, { useState } from "react";
+import Autosuggest from "react-autosuggest";
 
 const SearchBar = () => {
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
   const dummySuggestions = [
-    'iphone 13',
-    'samsung galaxy s21',
-    'laptop',
-    'smartwatch',
-    'bluetooth headphones',
-    'tv',
+    "iphone 13",
+    "samsung galaxy s21",
+    "laptop",
+    "smartwatch",
+    "bluetooth headphones",
+    "tv",
   ];
 
   const getSuggestions = (inputValue) => {
@@ -30,15 +30,15 @@ const SearchBar = () => {
   };
 
   const onSuggestionSelected = (event, { suggestion }) => {
-    console.log('Selected suggestion:', suggestion);
+    console.log("Selected suggestion:", suggestion);
   };
 
   const renderSuggestion = (suggestion) => {
-    return <div className='p-2 z-50'>{suggestion}</div>;
+    return <div className="p-2 z-50">{suggestion}</div>;
   };
 
   const inputProps = {
-    placeholder: 'Search for products...',
+    placeholder: "Search for products...",
     value,
     onChange: (event, { newValue }) => {
       setValue(newValue);
@@ -46,7 +46,7 @@ const SearchBar = () => {
   };
 
   return (
-    <div className='bg-zinc-50 text-slate-700 p-2 z-50'>
+    <div className="bg-zinc-50 text-slate-700 p-2 z-50">
       <Autosuggest
         suggestions={suggestions}
         onSuggestionsFetchRequested={onSuggestionsFetchRequested}

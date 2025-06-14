@@ -5,13 +5,13 @@ import Navbar from "../components/Navbar/navbar";
 import { useCart } from "../context/CartContext";
 
 const ProductPage = () => {
-    const { currentProduct } = useCart();
-    return (
-        <>
-            <Navbar />
-            <ProductDetails productId={currentProduct} />
-        </>
-    );
+  const { currentProduct } = useCart();
+  return (
+    <>
+      <Navbar />
+      <ProductDetails productId={currentProduct} />
+    </>
+  );
 };
 
 export default ProductPage;

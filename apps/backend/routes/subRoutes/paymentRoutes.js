@@ -1,13 +1,16 @@
-const Router = require('express-promise-router');
+const Router = require("express-promise-router");
 const router = Router({ mergeParams: true });
 
-const { getCart, handlePayment, setCart } = require('../../controllers/paymentController');
+const {
+  getCart,
+  handlePayment,
+  setCart,
+} = require("../../controllers/paymentController");
 
 module.exports = () => {
+  router.route("/getCart/:id").get(getCart);
+  router.route("/create-checkout-session").post(handlePayment);
+  router.route("/setCart").post(setCart);
 
-  router.route('/getCart/:id').get(getCart);
-  router.route('/create-checkout-session').post(handlePayment);
-  router.route('/setCart').post(setCart);
-  
-  return router
+  return router;
 };
