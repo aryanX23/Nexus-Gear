@@ -94,7 +94,7 @@ async function handlePayment(req, res) {
             quantity: item.quantity,
             price_data: {
                 currency: "inr",
-                unit_amount: (item.price * 100) / item.quantity,
+                unit_amount: Math.round(item.price * 100), // item.price is unit price, convert to paise
                 product_data: {
                     description: item.description,
                     name: item.name,
@@ -115,7 +115,9 @@ async function handlePayment(req, res) {
         let amount = 0;
 
         for (var i = 0; i < cartItems.length; i++) {
-            amount += cartItems[i].price;
+            if (cartItems[i] && typeof cartItems[i].price === 'number' && typeof cartItems[i].quantity === 'number') {
+                amount += (cartItems[i].price * cartItems[i].quantity);
+            }
         }
 
         const orderId = await createOrderInDb({ email, userId, currency, amount, cartItems });

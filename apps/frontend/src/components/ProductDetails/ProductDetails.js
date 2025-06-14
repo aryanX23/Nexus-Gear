@@ -201,7 +201,19 @@ const ProductDetailPage = (props) => {
                                 <div className="flex items-center gap-6">
                                     <QuantitySelector quantity={quantity} setQuantity={setQuantity} />
                                     <button
-                                        onClick={() => addToCart({ ...product, _id: props.productId, quantity })}
+                                        onClick={() => {
+                                            addToCart({ ...product, _id: props.productId, quantity, price: product.price }); // Ensure unit price is passed
+                                            toast.success("Item added to cart!", {
+                                                position: "top-right",
+                                                autoClose: 2000,
+                                                hideProgressBar: false,
+                                                closeOnClick: true,
+                                                pauseOnHover: true,
+                                                draggable: true,
+                                                progress: undefined,
+                                                theme: "light",
+                                            });
+                                        }}
                                         className="flex-grow flex items-center justify-center gap-3 h-14 px-6 font-semibold text-white bg-gradient-to-r from-cyan-500 to-blue-600 rounded-lg shadow-lg hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition"
                                     >
                                         <FaShoppingCart size={20} />
