@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = "https://nexus-gear-backend.vercel.app";
+const BASE_URL = "http://localhost:8000"; // TODO: shift to env level
 
 export default axios.create({
     baseURL: BASE_URL
