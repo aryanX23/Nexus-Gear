@@ -145,25 +145,21 @@ async function handlePayment(req, res) {
 }
 
 async function createOrderInDb(payload) {
-  try {
-    const { email, userId, currency, amount, cartItems } = payload;
+  const { email, userId, currency, amount, cartItems } = payload;
 
-    const orderId = getId("ORDER");
+  const orderId = getId("ORDER");
 
-    await Order.create({
-      email,
-      userId,
-      currency,
-      amount: round(amount, 2),
-      products: cartItems,
-      orderId,
-      status: "initiated",
-    });
+  await Order.create({
+    email,
+    userId,
+    currency,
+    amount: round(amount, 2),
+    products: cartItems,
+    orderId,
+    status: "initiated",
+  });
 
-    return orderId;
-  } catch (error) {
-    throw error;
-  }
+  return orderId;
 }
 
 async function handleWebhooks(req, res) {
