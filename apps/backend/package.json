@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "lint": "cross-env ESLINT_USE_FLAT_CONFIG=false eslint ./**/*.js"
+    "lint": "eslint ./**/*.js"
   },
   "keywords": [],
   "author": "",
