@@ -35,7 +35,7 @@ const HomePage = () => {
       }
     }
     handleFetch();
-  }, []);
+  }, [axiosprivate, userId, setCartItems]);
 
   return (
     <>

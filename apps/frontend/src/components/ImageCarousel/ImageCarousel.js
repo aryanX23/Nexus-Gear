@@ -9,12 +9,6 @@ const ImageCarousel = ({ images, autoScrollInterval = 3000 }) => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   }, [images.length]);
 
-  const prevImage = () => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
-  };
-
   useEffect(() => {
     if (images.length === 0) return;
 
@@ -33,7 +27,7 @@ const ImageCarousel = ({ images, autoScrollInterval = 3000 }) => {
     <div className="carousel-container">
       <img
         src={images[currentIndex]}
-        alt={`Image ${currentIndex}`}
+        alt={`GG ${currentIndex}`}
         className="carousel-image"
       />
     </div>

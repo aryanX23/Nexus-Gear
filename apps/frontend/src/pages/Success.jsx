@@ -10,7 +10,7 @@ export default function Success() {
 
   useEffect(() => {
     setTimeout(handleRedirect, 5000);
-  }, []);
+  });
 
   return (
     <div className="bg-gray-100 h-screen flex">

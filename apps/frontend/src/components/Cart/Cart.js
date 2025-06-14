@@ -127,10 +127,7 @@ export default function Cart(props) {
 
                       <div className="mt-8">
                         <div className="flow-root">
-                          <ul
-                            role="list"
-                            className="-my-6 divide-y divide-gray-200 border-gray-200"
-                          >
+                          <ul className="-my-6 divide-y divide-gray-200 border-gray-200">
                             {cartItems.map((product) => (
                               <li key={product._id} className="flex py-6">
                                 <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border border-gray-200">

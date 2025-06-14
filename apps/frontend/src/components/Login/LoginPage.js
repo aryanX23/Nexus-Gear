@@ -163,12 +163,19 @@ const LoginPage = () => {
               </div>
 
               <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors"
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Placeholder: Implement forgot password functionality or navigation
+                    toast.info("Forgot password feature not yet implemented.", {
+                      position: "top-right",
+                      autoClose: 3000,
+                    });
+                  }}
+                  className="font-medium text-indigo-600 hover:text-indigo-500 transition-colors focus:outline-none"
                 >
                   Forgot password?
-                </a>
+                </button>
               </div>
             </div>
 

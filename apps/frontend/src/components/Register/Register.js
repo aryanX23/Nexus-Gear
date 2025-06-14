@@ -203,9 +203,22 @@ const Register = () => {
                 className="ml-2 block text-sm text-gray-900"
               >
                 I agree to the{" "}
-                <a href="#" className="text-indigo-600 hover:text-indigo-500">
+                <button
+                  type="button"
+                  onClick={() => {
+                    // Placeholder: Implement navigation to Terms and Conditions or show a modal
+                    toast.info(
+                      "Terms and Conditions page not yet implemented.",
+                      {
+                        position: "top-right",
+                        autoClose: 3000,
+                      }
+                    );
+                  }}
+                  className="text-indigo-600 hover:text-indigo-500 focus:outline-none"
+                >
                   Terms and Conditions
-                </a>
+                </button>
               </label>
             </div>
 
