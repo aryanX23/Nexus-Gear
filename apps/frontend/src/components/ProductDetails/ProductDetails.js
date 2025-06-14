@@ -38,7 +38,11 @@ const InteractiveStarRating = ({ rating, setRating }) => (
         className="focus:outline-none"
       >
         <FaStar
-          className={`w-7 h-7 transition-colors duration-200 ${rating >= star ? "text-yellow-400" : "text-slate-300 hover:text-yellow-300"}`}
+          className={`w-7 h-7 transition-colors duration-200 ${
+            rating >= star
+              ? "text-yellow-400"
+              : "text-slate-300 hover:text-yellow-300"
+          }`}
         />
       </button>
     ))}
@@ -266,13 +270,21 @@ const ProductDetailPage = (props) => {
               <nav className="flex gap-4" aria-label="Tabs">
                 <button
                   onClick={() => setActiveDetailsTab("description")}
-                  className={`py-3 px-5 font-semibold rounded-t-lg transition-colors duration-200 ${activeDetailsTab === "description" ? "bg-white border border-slate-200 border-b-white text-blue-600" : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"}`}
+                  className={`py-3 px-5 font-semibold rounded-t-lg transition-colors duration-200 ${
+                    activeDetailsTab === "description"
+                      ? "bg-white border border-slate-200 border-b-white text-blue-600"
+                      : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                  }`}
                 >
                   Description
                 </button>
                 <button
                   onClick={() => setActiveDetailsTab("reviews")}
-                  className={`py-3 px-5 font-semibold rounded-t-lg transition-colors duration-200 ${activeDetailsTab === "reviews" ? "bg-white border border-slate-200 border-b-white text-blue-600" : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"}`}
+                  className={`py-3 px-5 font-semibold rounded-t-lg transition-colors duration-200 ${
+                    activeDetailsTab === "reviews"
+                      ? "bg-white border border-slate-200 border-b-white text-blue-600"
+                      : "text-slate-500 hover:bg-slate-100 hover:text-slate-700"
+                  }`}
                 >
                   Reviews ({reviews.length})
                 </button>

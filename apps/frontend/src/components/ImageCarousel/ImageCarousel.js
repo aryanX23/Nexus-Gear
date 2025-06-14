@@ -6,11 +6,13 @@ const ImageCarousel = ({ images, autoScrollInterval = 3000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const nextImage = useCallback(() => {
-    setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
   }, [images.length]);
 
   const prevImage = () => {
-    setCurrentIndex(prevIndex => (prevIndex - 1 + images.length) % images.length);
+    setCurrentIndex(
+      (prevIndex) => (prevIndex - 1 + images.length) % images.length
+    );
   };
 
   useEffect(() => {
