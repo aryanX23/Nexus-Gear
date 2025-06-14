@@ -1,27 +1,31 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 import "./ImageCarousel.css";
 
 const ImageCarousel = ({ images, autoScrollInterval = 3000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
-  const nextImage = () => {
-    setCurrentIndex((currentIndex + 1) % images.length);
-  };
+  const nextImage = useCallback(() => {
+    setCurrentIndex(prevIndex => (prevIndex + 1) % images.length);
+  }, [images.length]);
 
   const prevImage = () => {
-    setCurrentIndex((currentIndex - 1 + images.length) % images.length);
+    setCurrentIndex(prevIndex => (prevIndex - 1 + images.length) % images.length);
   };
 
   useEffect(() => {
-    // Automatically switch to the next image at the specified interval
+    if (images.length === 0) return;
+
     const intervalId = setInterval(nextImage, autoScrollInterval);
 
-    // Clear the interval when the component is unmounted
     return () => {
       clearInterval(intervalId);
     };
-  }, [currentIndex, autoScrollInterval]);
+  }, [nextImage, autoScrollInterval, images.length]);
+
+  if (images.length === 0) {
+    return null;
+  }
 
   return (
     <div className="carousel-container">
