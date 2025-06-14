@@ -57,7 +57,7 @@ async function authenticateUser(req, res, next) {
       email: tokenDetails?.email,
     };
     next();
-  } catch (err) {
+  } catch (_err) {
     return res.status(401).send({
       message: "Unauthorized",
     });

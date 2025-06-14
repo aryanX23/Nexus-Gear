@@ -10,7 +10,7 @@ const { User } = require("../models");
 const { errorHandler } = require("../utils/errorHandler");
 const { getId } = require("../utils/generateId");
 
-async function addUser(req, res, next) {
+async function addUser(req, res) {
   try {
     const { name = "", email = "", password = "" } = req.body || {};
 
@@ -92,14 +92,12 @@ async function handleLogin(req, res) {
     });
     const refreshToken = jwt.sign(payload, REFRESH_SECRET_KEY);
 
-    return res
-      .status(200)
-      .send({
-        ACCESS_TOKEN: accessToken,
-        REFRESH_TOKEN: refreshToken,
-        userId,
-        status: "success",
-      });
+    return res.status(200).send({
+      ACCESS_TOKEN: accessToken,
+      REFRESH_TOKEN: refreshToken,
+      userId,
+      status: "success",
+    });
   } catch (error) {
     errorHandler(req, res, error);
   }

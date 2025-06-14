@@ -8,7 +8,7 @@ const { User, Order, Webhook } = require("../models");
 const { errorHandler } = require("../utils/errorHandler");
 const { getId } = require("../utils/generateId");
 
-async function getCart(req, res, next) {
+async function getCart(req, res) {
   try {
     const userId = req.params.id || "";
 

@@ -3,5 +3,14 @@
   "rules": {
     // For example:
     // "react/prop-types": "off"
+
+    // Attempt to mitigate eslint-plugin-flowtype issues with ESLint 9
+    // by turning off common rules. If the plugin itself is crashing
+    // during loading, this might not be enough.
+    "flowtype/define-flow-type": "off",
+    "flowtype/use-flow-type": "off",
+    "flowtype/valid-syntax": "off"
+    // Add any other specific flowtype rules here if the error message changes
+    // and points to a different rule.
   }
 }

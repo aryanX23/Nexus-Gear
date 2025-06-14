@@ -3,7 +3,6 @@ const { isEmpty } = require("lodash");
 const { Product, User, Review } = require("../models");
 const { errorHandler } = require("../utils/errorHandler");
 const { getId } = require("../utils/generateId");
-const { get } = require("mongoose");
 
 async function addProducts(req, res) {
   try {
