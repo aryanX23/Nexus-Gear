@@ -31,7 +31,7 @@ export default function Cart(props) {
                 axiosprivate
                     .post(
                         "/api/payments/create-checkout-session",
-                        JSON.stringify({ cartItems }),
+                        JSON.stringify({ cartItems }), // cartItems here will still send unit price, backend should handle total
                         {
                             headers: { "Content-Type": "application/json" },
                             withCredentials: true,
@@ -65,11 +65,15 @@ export default function Cart(props) {
     };
 
     useEffect(() => {
-        var temp = 0.0;
-        for (var i = 0; i < cartItems.length; i++)
-            temp += cartItems[i]?.price;
-        setSubTotal((prev) => temp);
-    }, [change, cartItems?.length]);
+        const total = cartItems.reduce((acc, item) => {
+            // Ensure item and its properties are valid before calculation
+            if (item && typeof item.price === 'number' && typeof item.quantity === 'number') {
+                return acc + (item.price * item.quantity);
+            }
+            return acc; // Skip invalid items
+        }, 0);
+        setSubTotal(total);
+    }, [cartItems, change]); // Added cartItems to dependency array as subTotal depends on it directly
 
     return (
         <Transition.Root show={open} as={Fragment}>
@@ -165,7 +169,7 @@ export default function Cart(props) {
                                                                                 </h3>
                                                                                 <p className="ml-4">
                                                                                     &#8377;{
-                                                                                        product.price
+                                                                                        (product.price * product.quantity).toFixed(2)
                                                                                     }
                                                                                 </p>
                                                                             </div>
@@ -209,7 +213,7 @@ export default function Cart(props) {
                                         <div className="border-t border-gray-200 px-4 py-6 sm:px-6">
                                             <div className="flex justify-between text-base font-medium text-slate-300">
                                                 <p>Subtotal</p>
-                                                <p>Rs {subTotal}</p>
+                                                <p>Rs {subTotal.toFixed(2)}</p>
                                             </div>
                                             <p className="mt-0.5 text-sm text-gray-500">
                                                 Shipping and taxes calculated at

@@ -43,29 +43,45 @@ export function CartProvider({ children }) {
     const addToCart = async (product) => {
         try {
             setChange(prev => !prev);
-            setCartItems((prev) => {
-                var temp = prev;
-                for (var i = 0; i < temp.length; i++) {
-                    if (temp[i]._id === product._id) {
-                        temp[i].quantity += product.quantity;
-                        temp[i].price += product.price;
-                        handleUpdate(temp);
-                        return temp;
-                    }
+            setCartItems((prevCartItems) => {
+                const existingProductIndex = prevCartItems.findIndex(
+                    (item) => item._id === product._id
+                );
+
+                let updatedCartItems;
+
+                if (existingProductIndex !== -1) {
+                    // Product exists, update quantity. Unit price (item.price) remains unchanged.
+                    updatedCartItems = prevCartItems.map((item, index) => {
+                        if (index === existingProductIndex) {
+                            return {
+                                ...item, // Preserves existing item properties including unit price
+                                quantity: item.quantity + product.quantity, // product.quantity is the quantity to add
+                            };
+                        }
+                        return item;
+                    });
+                } else {
+                    // Product does not exist, add new product
+                    updatedCartItems = [...prevCartItems, product];
                 }
-                handleUpdate(temp.concat(product));
-                return temp.concat(product);
+                
+                handleUpdate(updatedCartItems);
+                return updatedCartItems;
             });
         } catch (err) {
+            console.error("Error in addToCart:", err); // Log the error for debugging
+            // It's generally better to show a user-friendly error message
+            // than just redirecting. For now, keeping the redirect.
             navigate("/login", { state: { from: location }, replace: true });
         }
     };
 
     const removeFromCart = (productId) => {
-        setCartItems(prev => {
-            const temp = cartItems.filter((item) => item._id !== productId);
-            handleUpdate(temp);
-            return temp;
+        setCartItems(prevCartItems => { // Use functional update to get the latest state
+            const updatedCartItems = prevCartItems.filter((item) => item._id !== productId);
+            handleUpdate(updatedCartItems);
+            return updatedCartItems;
         });
     };
 
