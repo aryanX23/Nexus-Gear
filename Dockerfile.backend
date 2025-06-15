@@ -1,41 +1,34 @@
-# ~~~~~~~~~~~~~~~~~~ Stage 1: The Builder ~~~~~~~~~~~~~~~~~~
-# This stage installs all dependencies and copies the source code.
+# ~~~~~~~~~~~~~~~~~~ Stage 1: Production Dependencies Builder ~~~~~~~~~~~~~~~~~~
+# This stage creates a lean node_modules folder containing ONLY production dependencies.
 FROM oven/bun:1-alpine AS builder
 
 WORKDIR /app
 
-# Copy all necessary config and package.json files
 COPY package.json bun.lock ./
-COPY turbo.json ./
 COPY apps/backend/package.json ./apps/backend/package.json
 COPY apps/frontend/package.json ./apps/frontend/package.json
-# Add any other workspace package.json files here.
 
-# Install ALL dependencies for the entire monorepo into /app/node_modules
-RUN bun install --frozen-lockfile
+RUN bun install --production --frozen-lockfile
 
-# Copy the rest of the source code
 COPY . .
 
 
-# ~~~~~~~~~~~~~~~~~~ Stage 2: The Production Runner ~~~~~~~~~~~~~~~~~~
-# This stage copies the pre-installed modules and source code.
+# ~~~~~~~~~~~~~~~~~~ Stage 2: Final Production Runner ~~~~~~~~~~~~~~~~~~
+# This stage assembles the final, small image from the builder's artifacts.
 FROM oven/bun:1-alpine
 
 WORKDIR /app
 
-# Copy the entire node_modules folder from the builder
+# Copy the lean, production-only node_modules folder from the builder stage.
 COPY --from=builder /app/node_modules ./node_modules
 
-# Copy the source code for the backend app
+# Copy only the source code for the backend application.
 COPY --from=builder /app/apps/backend ./apps/backend
 
-# Copy the root package.json, which may be needed by bun
+# Copy the root package.json. Bun may need this to understand the workspace.
 COPY --from=builder /app/package.json ./
 
-# Expose the server port
 EXPOSE 8000
 
-# Set the final working directory and run the start command
 WORKDIR /app/apps/backend
 CMD ["bun", "start"]
