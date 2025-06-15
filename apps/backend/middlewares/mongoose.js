@@ -4,10 +4,7 @@ require("dotenv").config();
 const { MONGO_URI = "mongodb://localhost:27017" } = process.env || {};
 
 mongoose.Promise = global.Promise;
-const mongooseOptions = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
+const mongooseOptions = {};
 
 module.exports = () => {
   mongoose.connect(MONGO_URI, mongooseOptions);
