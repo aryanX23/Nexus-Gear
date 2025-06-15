@@ -11,9 +11,9 @@ module.exports = () =>
     .use("/users", userRoutes())
     .use("/products", productRoutes())
     .use("/payments", paymentRoutes())
-    .get("/", (req, res) => {
+    .get("/healthcheck", (req, res) => {
       console.log("All routes are online!");
-      res.status(200).send("Server is Up and Running!");
+      return res.status(200).send("Server is Up and Running!");
     })
     .all("*", (req, res) => {
       // eslint-disable-next-line no-undef

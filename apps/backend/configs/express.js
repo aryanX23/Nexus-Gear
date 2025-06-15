@@ -24,6 +24,7 @@ module.exports = () => {
 
   app.use(async (req, res, next) => {
     const unVerifiedRoutes =
+      req.path.includes("/healthcheck") ||
       req.path.includes("/products") ||
       req.path.includes("/api/payments/webhooks") ||
       req.path.includes("/users");
