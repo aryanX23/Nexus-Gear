@@ -3,11 +3,7 @@ node_modules
 **/node_modules
 
 # Ignore build artifacts everywhere
-dist
-build
 .next
-**/dist
-**/build
 **/.next
 
 # Ignore IDE/editor stuff
@@ -16,12 +12,8 @@ build
 **/.vscode
 **/.DS_Store
 
-# Ignore turbo and cache
-turbo
-.cache
-**/turbo
-**/.cache
-
 # Ignore all .env files in root and subfolders
 .env*
 **/.env*
+
+**/secret.yaml

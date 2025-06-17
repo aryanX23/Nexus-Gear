@@ -1,5 +1,8 @@
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const mongoose = require("mongoose");
-require("dotenv").config();
 
 const { MONGO_URI = "mongodb://localhost:27017" } = process.env || {};
 

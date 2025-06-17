@@ -1,0 +1,83 @@
+# 1. The Namespace for all backend resources
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nexusgear-backend-ns
+---
+# 2. The Deployment for the backend application
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexusgear-backend-deployment
+  namespace: nexusgear-backend-ns
+  labels:
+    app: nexusgear-backend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nexusgear-backend
+  template:
+    metadata:
+      labels:
+        app: nexusgear-backend
+    spec:
+      # This block ensures these pods DO NOT run on the tainted frontend node.
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: frontend
+                operator: DoesNotExist
+      containers:
+      - name: nexusgear-backend
+        image: aryanx23/nexus-gear-backend-image:latest
+        ports:
+        - containerPort: 8000
+        envFrom:
+        - secretRef:
+            name: nexusgear-backend-secret
+        resources:
+          requests:
+            memory: "128Mi"
+            cpu: "100m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
+---
+# 3. The Service to expose the backend pods internally
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexusgear-backend-service
+  namespace: nexusgear-backend-ns
+spec:
+  selector:
+    app: nexusgear-backend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8000
+---
+# 4. The Horizontal Pod Autoscaler (HPA)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nexusgear-backend-hpa
+  namespace: nexusgear-backend-ns
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nexusgear-backend-deployment
+  minReplicas: 1
+  maxReplicas: 2
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80 # Scale up if CPU usage goes above 80%
+

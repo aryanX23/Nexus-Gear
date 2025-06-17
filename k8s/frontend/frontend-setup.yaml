@@ -1,0 +1,57 @@
+# 1. The Namespace for all frontend resources
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nexusgear-frontend-ns
+---
+# 2. The Deployment for the frontend application
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nexusgear-frontend-deployment
+  namespace: nexusgear-frontend-ns
+  labels:
+    app: nexusgear-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nexusgear-frontend
+  template:
+    metadata:
+      labels:
+        app: nexusgear-frontend
+    spec:
+      # --- IMPORTANT: Toleration Rule ---
+      # This block allows this pod to be scheduled on the tainted frontend node.
+      tolerations:
+      - key: "frontend"
+        operator: "Exists"
+        effect: "NoSchedule"
+      containers:
+      - name: nexusgear-frontend
+        image: aryanx23/nexus-gear-frontend-image:latest
+        ports:
+        - containerPort: 80
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "50m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+---
+# 3. The Service to expose the frontend pod internally
+apiVersion: v1
+kind: Service
+metadata:
+  name: nexusgear-frontend-service
+  namespace: nexusgear-frontend-ns
+spec:
+  selector:
+    app: nexusgear-frontend
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 80
+
