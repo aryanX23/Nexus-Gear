@@ -1,5 +1,5 @@
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
 }
 
 const { ACCESS_TOKEN_SECRET, REFRESH_TOKEN_SECRET } = process.env || {};

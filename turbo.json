@@ -3,13 +3,8 @@
   "ui": "tui",
   "tasks": {
     "build": {
-      "dependsOn": [
-        "^build"
-      ],
-      "outputs": [
-        "build/**",
-        "dist/**"
-      ]
+      "dependsOn": ["^build"],
+      "outputs": ["build/**", "dist/**"]
     },
     "lint": {
       "dependsOn": ["^lint"],
