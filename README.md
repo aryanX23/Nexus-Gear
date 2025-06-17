@@ -1,84 +1,135 @@
-# Turborepo starter
+# Nexus Gear - Gaming Peripherals E-Commerce Shop
 
-This Turborepo starter is maintained by the Turborepo core team.
+Welcome to Nexus Gear, your one-stop shop for high-quality gaming peripherals! This project is a full-stack e-commerce application built with a modern technology stack, designed to provide a seamless and engaging shopping experience for gaming enthusiasts.
 
-## Using this example
+## Features
 
-Run the following command:
+*   **Product Catalog:** Browse a wide range of gaming peripherals, including keyboards, mice, headsets, and more.
+*   **Product Details:** View detailed information, images, and specifications for each product.
+*   **User Authentication:** Secure user registration and login functionality.
+*   **Shopping Cart:** Add products to your cart and manage your selections.
+*   **Secure Checkout:** Integrated with Stripe for secure payment processing.
+*   **Responsive Design:** Enjoy a consistent experience across desktop and mobile devices.
 
-```sh
-npx create-turbo@latest
-```
+## Technologies Used
 
-## What's inside?
+This project leverages a variety of modern technologies to deliver a robust and scalable e-commerce platform:
 
-This Turborepo includes the following packages/apps:
+### Monorepo Management
+*   **Turbo:** High-performance build system for JavaScript and TypeScript monorepos.
+*   **Yarn:** Fast, reliable, and secure dependency management.
 
-### Apps and Packages
+### Frontend (React Application - `apps/frontend`)
+*   **React:** A JavaScript library for building user interfaces.
+*   **React Router:** Declarative routing for React applications.
+*   **Axios:** Promise-based HTTP client for the browser and Node.js.
+*   **Tailwind CSS:** A utility-first CSS framework for rapid UI development.
+*   **Font Awesome & Heroicons:** Icon libraries for a rich visual experience.
+*   **React Toastify:** For displaying notifications.
+*   **React Tabs:** For creating tabbed content sections.
+*   **React Stripe Checkout:** Client-side integration for Stripe payments.
+*   **Testing Library:** For testing React components and user interactions.
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Backend (Node.js/Express Application - `apps/backend`)
+*   **Node.js:** A JavaScript runtime built on Chrome's V8 JavaScript engine.
+*   **Express.js:** A fast, unopinionated, minimalist web framework for Node.js.
+*   **Mongoose:** Elegant MongoDB object modeling for Node.js.
+*   **Stripe API:** Server-side integration for secure payment processing.
+*   **JSON Web Token (JWT):** For implementing secure authentication.
+*   **Helmet:** Helps secure Express apps by setting various HTTP headers.
+*   **CORS:** Middleware for enabling Cross-Origin Resource Sharing.
+*   **Body-parser:** Node.js body parsing middleware.
+*   **Cookie-parser:** Parse Cookie header and populate `req.cookies`.
+*   **Dotenv:** Loads environment variables from a `.env` file.
+*   **Cryptr:** Simple encryption and decryption for Node.js.
+*   **UUID:** For generating unique identifiers.
+*   **Lodash:** A modern JavaScript utility library delivering modularity, performance & extras.
+*   **Nodemon:** Utility that monitors for any changes in your source and automatically restarts your server (development).
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+### Linting & Formatting
+*   **ESLint:** Pluggable and configurable linter tool for identifying and reporting on patterns in JavaScript.
+*   **Prettier:** An opinionated code formatter.
 
-### Utilities
+### Deployment
+*   **Docker:** Containerization platform for building, shipping, and running applications.
+*   **Nginx:** High-performance web server, reverse proxy, and load balancer.
 
-This Turborepo has some additional tools already setup for you:
+## Project Structure
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm build
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-```
-cd my-turborepo
-pnpm dev
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-```
-cd my-turborepo
-npx turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
+The project is organized as a monorepo with the following structure:
 
 ```
-npx turbo link
+nexus-gear/
+├── apps/
+│   ├── backend/      # Backend Express.js application
+│   └── frontend/     # Frontend React application
+├── packages/         # Shared packages (if any)
+├── Dockerfile.backend
+├── Dockerfile.frontend
+├── nginx.conf
+├── package.json      # Root package.json for monorepo
+└── README.md
 ```
 
-## Useful Links
+## Getting Started
 
-Learn more about the power of Turborepo:
+### Prerequisites
 
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+*   Node.js (>=18.x.x)
+*   Yarn (1.22.22 or later)
+*   Docker (optional, for containerized deployment)
+
+### Installation & Setup
+
+1.  **Clone the repository:**
+    ```bash
+    git clone <repository-url>
+    cd nexus-gear
+    ```
+
+2.  **Install dependencies:**
+    This project uses Yarn workspaces. Install dependencies from the root directory:
+    ```bash
+    yarn install
+    ```
+
+3.  **Environment Variables:**
+    *   Navigate to `apps/backend` and create a `.env` file from `.env.example`. Populate it with your database connection strings, Stripe API keys, JWT secrets, etc.
+    *   Navigate to `apps/frontend` and create a `.env` file from `.env.example` if needed for frontend-specific configurations (e.g., API base URL).
+
+### Running the Application
+
+*   **Development Mode (with auto-reloading):**
+    From the root directory:
+    ```bash
+    yarn dev
+    ```
+    This will typically start:
+    *   The backend server (e.g., on `http://localhost:8000`)
+    *   The frontend development server (e.g., on `http://localhost:3000`)
+
+*   **Production Build:**
+    From the root directory:
+    ```bash
+    yarn build
+    ```
+    This will create optimized builds for both frontend and backend applications.
+
+### Running with Docker (Example)
+
+1.  **Build Docker images:**
+    ```bash
+    docker build -t nexusgear-frontend -f Dockerfile.frontend .
+    docker build -t nexusgear-backend -f Dockerfile.backend .
+    ```
+
+2.  **Run Docker containers:**
+    (This may require a `docker-compose.yml` file for easier orchestration, which is not included in this basic setup). You would typically run the backend container and then the frontend container (or an Nginx container serving the frontend build and proxying to the backend).
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a pull request or open an issue.
+
+## License
+
+This project is licensed under the ISC License.
