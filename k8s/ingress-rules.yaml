@@ -1,3 +1,4 @@
+# 3. The updated Ingress resource, now pointing to the local proxy services.
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
@@ -7,6 +8,7 @@ metadata:
     kubernetes.io/ingress.class: "nginx"
 spec:
   rules:
+  # Rule for the Backend API
   - host: "nexusgear-backend.aryan-rai.com"
     http:
       paths:
@@ -14,9 +16,12 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: nexusgear-backend-service
+            # Point to the proxy service in the 'default' namespace
+            name: backend-proxy-service
             port:
+              # This port number must match the port on the target service
               number: 80
+  # Rule for the Frontend Application
   - host: "nexusgear.aryan-rai.com"
     http:
       paths:
@@ -24,6 +29,8 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: nexusgear-frontend-service
+            # Point to the proxy service in the 'default' namespace
+            name: frontend-proxy-service
             port:
+              # This port number must match the port on the target service
               number: 80

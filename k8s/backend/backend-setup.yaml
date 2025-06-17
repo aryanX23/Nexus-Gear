@@ -80,4 +80,16 @@ spec:
       target:
         type: Utilization
         averageUtilization: 80 # Scale up if CPU usage goes above 80%
+---
+# 5. A proxy service in the 'default' namespace pointing to the backend service.
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-proxy-service
+  namespace: default
+spec:
+  type: ExternalName
+  # This must be the FQDN of your backend service: <service-name>.<namespace>.svc.cluster.local
+  externalName: nexusgear-backend-service.nexusgear-backend-ns.svc.cluster.local
+---
 
