@@ -33,9 +33,12 @@ spec:
         image: aryanx23/nexus-gear-frontend-image:latest
         ports:
         - containerPort: 80
-        envFrom:
-        - secretRef:
-            name: nexusgear-frontend-secret
+        env:
+          - name: REACT_APP_API_BASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: nexusgear-frontend-secret
+                key: REACT_APP_API_BASE_URL
         resources:
           requests:
             memory: "64Mi"
