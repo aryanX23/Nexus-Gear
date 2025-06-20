@@ -27,7 +27,7 @@ jobs:
           node-version: "18"
 
       - name: Install Dependencies
-        run: yarn install
+        run: yarn install --frozen-lockfile
 
       - name: Start Turborepo Cache Server
         uses: brunojppb/turbo-cache-server@1.0.3
@@ -38,8 +38,8 @@ jobs:
           S3_ENDPOINT: ${{ secrets.S3_ENDPOINT }}
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_REGION: ${{ secrets.S3_REGION }}
-          S3_USE_PATH_STYLE: "false"
-          IGNORE_QUERY_SLUG: "true"
+          S3_USE_PATH_STYLE: false
+          MAX_PAYLOAD_SIZE_IN_MB: "1000"
 
       - name: Build Applications with Remote Cache
         run: npx turbo build
