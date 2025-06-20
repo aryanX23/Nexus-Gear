@@ -43,8 +43,8 @@ jobs:
 
       - name: Create k8s namespace
         run: |
-          kubectl apply -f k8s/frontend/namespace-setup.yaml -n nexusgear-frontend-ns
-          kubectl apply -f k8s/backend/namespace-setup.yaml -n nexusgear-backend-ns
+          kubectl apply -f k8s/frontend/namespace-setup.yaml
+          kubectl apply -f k8s/backend/namespace-setup.yaml
 
       - name: Create and Apply Frontend Secrets
         env:
@@ -60,7 +60,7 @@ jobs:
           data:
             REACT_APP_API_BASE_URL: $(echo -n "$REACT_APP_API_BASE_URL" | base64 -w 0)
           EOF
-          kubectl apply -f k8s/frontend/secret.yaml -n nexusgear-frontend-ns
+          kubectl apply -f k8s/frontend/secret.yaml
           rm k8s/frontend/secret.yaml
 
       - name: Create and Apply Backend Secrets
@@ -95,18 +95,18 @@ jobs:
             STRIPE_ORIGIN_URL: $(echo -n "$STRIPE_ORIGIN_URL" | base64 -w 0)
             STRIPE_WEBHOOK_SECRET: $(echo -n "$STRIPE_WEBHOOK_SECRET" | base64 -w 0)
           EOF
-          kubectl apply -f k8s/backend/secret.yaml -n nexusgear-backend-ns
+          kubectl apply -f k8s/backend/secret.yaml
           rm k8s/backend/secret.yaml
 
       - name: Deploy to Frontend to k8s
         run: |
-          kubectl apply -f k8s/frontend/frontend-setup.yaml -n nexusgear-frontend-ns
+          kubectl apply -f k8s/frontend/frontend-setup.yaml
 
       - name: Deploy to Backend to k8s
         run: |
-          kubectl apply -f k8s/backend/backend-setup.yaml -n nexusgear-backend-ns
+          kubectl apply -f k8s/backend/backend-setup.yaml
 
       - name: Ingress and TLS Certificate Setup
         run: |
-          kubectl apply -f k8s/ingress-rules.yaml -n default
-          kubectl apply -f k8s/production-issuer.yaml -n default
+          kubectl apply -f k8s/ingress-rules.yaml
+          kubectl apply -f k8s/production-issuer.yaml
