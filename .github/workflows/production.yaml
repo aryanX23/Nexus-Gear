@@ -9,12 +9,7 @@ env:
   TURBO_API: "http://127.0.0.1:8585"
   TURBO_TEAM: "aryanX23"
   TURBO_TOKEN: "nexusgear"
-  # =================================================================
-  # DISABLED ARTIFACT SIGNING: The brunojppb/turbo-cache-server action
-  # appears to return a 400 Bad Request error when receiving signed
-  # artifacts. Disabling this allows the upload to succeed.
-  # =================================================================
-  # TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
+  TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
 
 jobs:
   deploy:
