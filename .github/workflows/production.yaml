@@ -13,6 +13,7 @@ env:
   TURBO_API: "http://127.0.0.1:8585"
   TURBO_TEAM: "aryanX23"
   TURBO_TOKEN: "nexusgear"
+  TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
 # =================================================================
 # END: Turborepo Environment Variables
 # =================================================================
@@ -53,6 +54,14 @@ jobs:
 
       - name: Build Applications with Remote Cache
         run: npx turbo build
+
+      - name: Check Cache Server Logs
+        if: always()
+        run: |
+          echo "Waiting 5 seconds for logs to populate..."
+          sleep 5
+          echo "--- DOCKER CACHE SERVER LOGS ---"
+          docker logs $(docker ps -q --filter "ancestor=ghcr.io/brunojppb/turbo-cache-server")
       # =================================================================
       # END: Build Setup & Remote Cache Integration
       # =================================================================
