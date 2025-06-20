@@ -98,15 +98,17 @@ jobs:
           kubectl apply -f k8s/backend/secret.yaml
           rm k8s/backend/secret.yaml
 
-      - name: Deploy to Frontend to k8s
-        run: |
-          kubectl apply -f k8s/frontend/frontend-setup.yaml
-
-      - name: Deploy to Backend to k8s
-        run: |
-          kubectl apply -f k8s/backend/backend-setup.yaml
-
       - name: Ingress and TLS Certificate Setup
         run: |
           kubectl apply -f k8s/ingress-rules.yaml
           kubectl apply -f k8s/production-issuer.yaml
+
+      - name: Deploy and Restart Frontend to k8s
+        run: |
+          kubectl apply -f k8s/frontend/frontend-setup.yaml
+          kubectl rollout restart deployment nexusgear-frontend-deployment -n nexusgear-frontend-ns
+
+      - name: Deploy and Restart Backend to k8s
+        run: |
+          kubectl apply -f k8s/backend/backend-setup.yaml
+          kubectl rollout restart deployment nexusgear-backend-deployment -n nexusgear-backend-ns
