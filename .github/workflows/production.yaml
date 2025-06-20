@@ -51,6 +51,8 @@ jobs:
           S3_BUCKET_NAME: ${{ secrets.S3_BUCKET_NAME }}
           S3_REGION: ${{ secrets.S3_REGION }}
           S3_USE_PATH_STYLE: "false"
+          IGNORE_QUERY_SLUG: "true"
+          CONTAINER_NAME: "turbo-cache-server-ci"
 
       - name: Build Applications with Remote Cache
         run: npx turbo build
@@ -61,7 +63,7 @@ jobs:
           echo "Waiting 5 seconds for logs to populate..."
           sleep 5
           echo "--- DOCKER CACHE SERVER LOGS ---"
-          docker logs $(docker ps -q --filter "ancestor=ghcr.io/brunojppb/turbo-cache-server")
+          docker logs turbo-cache-server-ci # <-- Use the predictable name
       # =================================================================
       # END: Build Setup & Remote Cache Integration
       # =================================================================
