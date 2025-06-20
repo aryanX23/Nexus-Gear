@@ -17,6 +17,7 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        # Fetch full git history for Turborepo to accurately detect changes
         with:
           fetch-depth: 0
 
@@ -24,19 +25,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "18"
-
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
-
-      - name: Cache yarn dependencies
-        uses: actions/cache@v4
-        id: yarn-cache
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
 
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
@@ -52,8 +40,6 @@ jobs:
           S3_REGION: ap-south-1
           S3_USE_PATH_STYLE: false
           MAX_PAYLOAD_SIZE_IN_MB: "1000"
-          # This remains necessary for this cache server and modern turbo CLI
-          IGNORE_QUERY_SLUG: "true"
 
       - name: Build Applications with Remote Cache
         run: npx turbo build
@@ -62,9 +48,6 @@ jobs:
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
@@ -79,8 +62,6 @@ jobs:
           push: true
           tags: ${{ secrets.FRONTEND_IMAGE_TAG }}
           file: Dockerfile.frontend
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Build and push backend image
         uses: docker/build-push-action@v5
@@ -89,8 +70,6 @@ jobs:
           push: true
           tags: ${{ secrets.BACKEND_IMAGE_TAG }}
           file: Dockerfile.backend
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Save DigitalOcean kubeconfig
         run: |
