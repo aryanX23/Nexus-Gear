@@ -26,6 +26,19 @@ jobs:
         with:
           node-version: "18"
 
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache yarn dependencies
+        uses: actions/cache@v4
+        id: yarn-cache # use this to check for cache hit or miss
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
 
@@ -62,6 +75,8 @@ jobs:
           push: true
           tags: ${{ secrets.FRONTEND_IMAGE_TAG }}
           file: Dockerfile.frontend
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Build and push backend image
         uses: docker/build-push-action@v5
@@ -70,6 +85,8 @@ jobs:
           push: true
           tags: ${{ secrets.BACKEND_IMAGE_TAG }}
           file: Dockerfile.backend
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Save DigitalOcean kubeconfig
         run: |
