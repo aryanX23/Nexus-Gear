@@ -50,7 +50,7 @@ jobs:
         env:
           REACT_APP_API_BASE_URL: ${{ secrets.REACT_APP_API_BASE_URL }}
         run: |
-          cat <<EOF | k8s/frontend/secret.yaml
+          cat <<EOF > k8s/frontend/secret.yaml
           apiVersion: v1
           kind: Secret
           metadata:
@@ -76,7 +76,7 @@ jobs:
           STRIPE_ORIGIN_URL: ${{ secrets.STRIPE_ORIGIN_URL }}
           STRIPE_WEBHOOK_SECRET: ${{ secrets.STRIPE_WEBHOOK_SECRET }}
         run: |
-          cat <<EOF | k8s/backend/secret.yaml
+          cat <<EOF > k8s/backend/secret.yaml
           apiVersion: v1
           kind: Secret
           metadata:
