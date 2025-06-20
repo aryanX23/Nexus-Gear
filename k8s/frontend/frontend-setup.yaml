@@ -1,9 +1,3 @@
-# 1. The Namespace for all frontend resources
-apiVersion: v1
-kind: Namespace
-metadata:
-  name: nexusgear-frontend-ns
----
 # 2. The Deployment for the frontend application
 apiVersion: apps/v1
 kind: Deployment

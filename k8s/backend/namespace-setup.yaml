@@ -1,0 +1,5 @@
+# 1. The Namespace for all backend resources
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: nexusgear-backend-ns
