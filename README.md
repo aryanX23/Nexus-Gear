@@ -1,5 +1,5 @@
 # Nexus Gear - Gaming Peripherals E-Commerce Shop
-
+ 
 Welcome to Nexus Gear, your one-stop shop for high-quality gaming peripherals! This project is a full-stack e-commerce application built with a modern technology stack, designed to provide a seamless and engaging shopping experience for gaming enthusiasts.
 
 ## Features
