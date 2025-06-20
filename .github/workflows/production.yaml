@@ -7,7 +7,7 @@ on:
 # Global environment variables for Turborepo
 env:
   TURBO_API: "http://127.0.0.1:8585"
-  TURBO_TEAM: "aryanX23"
+  TURBO_TEAM: "Nexus-Gear"
   TURBO_TOKEN: "nexusgear"
   TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
 
