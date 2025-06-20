@@ -1,31 +1,14 @@
-# ~~~~~~~~~~~~~~~~~~ Stage 1: Production Dependencies Builder ~~~~~~~~~~~~~~~~~~
-# This stage creates a lean node_modules folder containing ONLY production dependencies.
-FROM node:18-alpine AS builder
+# ~~~~~~~~~~~~~~~~~~ Stage 1: The Final Production Image ~~~~~~~~~~~~~~~~~~
+# This stage assembles the final, small image from the artifacts
+FROM node:18-alpine AS final
 
+# Set the environment to production and define the working directory.
+ENV NODE_ENV=production
 WORKDIR /app
 
-COPY package.json yarn.lock ./
-COPY apps/backend/package.json ./apps/backend/package.json
-
-RUN yarn install --production --frozen-lockfile
-
-COPY apps/backend ./apps/backend
-
-
-# ~~~~~~~~~~~~~~~~~~ Stage 2: Final Production Runner ~~~~~~~~~~~~~~~~~~
-# This stage assembles the final, small image from the builder's artifacts.
-FROM node:18-alpine
-
-WORKDIR /app
-
-# Copy the lean, production-only node_modules folder from the builder stage.
-COPY --from=builder /app/node_modules ./node_modules
-
-# Copy only the source code for the backend application.
-COPY --from=builder /app/apps/backend ./apps/backend
-
-# Copy the root package.json. Yarn may need this to understand the workspace.
-COPY --from=builder /app/package.json ./
+COPY ./node_modules ./node_modules
+COPY ./package.json ./package.json
+COPY ./apps/backend ./apps/backend
 
 EXPOSE 8000
 
