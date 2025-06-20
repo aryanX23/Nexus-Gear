@@ -4,19 +4,17 @@ on:
   push:
     branches: [master]
 
-# =================================================================
-# START: Turborepo Environment Variables
-# These variables are required by the Turborepo CLI to enable and
-# connect to the remote cache server.
-# =================================================================
+# Global environment variables for Turborepo
 env:
   TURBO_API: "http://127.0.0.1:8585"
   TURBO_TEAM: "aryanX23"
   TURBO_TOKEN: "nexusgear"
-  TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
-# =================================================================
-# END: Turborepo Environment Variables
-# =================================================================
+  # =================================================================
+  # DISABLED ARTIFACT SIGNING: The brunojppb/turbo-cache-server action
+  # appears to return a 400 Bad Request error when receiving signed
+  # artifacts. Disabling this allows the upload to succeed.
+  # =================================================================
+  # TURBO_REMOTE_CACHE_SIGNATURE_KEY: ${{ secrets.TURBO_REMOTE_CACHE_SIGNATURE_KEY }}
 
 jobs:
   deploy:
@@ -28,11 +26,6 @@ jobs:
         with:
           fetch-depth: 0
 
-      # =================================================================
-      # START: Build Setup & Remote Cache Integration
-      # These steps set up the environment, start the cache server,
-      # and run the build to populate the cache or pull from it.
-      # =================================================================
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -52,21 +45,9 @@ jobs:
           S3_REGION: ${{ secrets.S3_REGION }}
           S3_USE_PATH_STYLE: "false"
           IGNORE_QUERY_SLUG: "true"
-          CONTAINER_NAME: "turbo-cache-server-ci"
 
       - name: Build Applications with Remote Cache
         run: npx turbo build
-
-      - name: Check Cache Server Logs
-        if: always()
-        run: |
-          echo "Waiting 5 seconds for logs to populate..."
-          sleep 5
-          echo "--- DOCKER CACHE SERVER LOGS ---"
-          docker logs turbo-cache-server-ci # <-- Use the predictable name
-      # =================================================================
-      # END: Build Setup & Remote Cache Integration
-      # =================================================================
 
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
