@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node index.js",
     "dev": "nodemon index.js",
-    "lint": "eslint ./**/*.js"
+    "lint": "eslint ./**/*.js",
+    "clean": "rimraf .turbo node_modules"
   },
   "keywords": [],
   "author": "",
